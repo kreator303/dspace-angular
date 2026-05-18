@@ -1,4 +1,24 @@
 // Add any global css for the theme here
 
+// Fira Sans — Mount Madonna brand body type. Weights match the live site
+// (200 body, 300 h2/h3) plus 400/600 as common UI weights.
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;300;400;600&display=swap');
+
 // imports the base global style
 @import '../../../styles/_global-styles.scss';
+
+// Bind Fira Sans as the body / heading font stack.
+:root {
+  --bs-font-sans-serif: "Fira Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+  font-family: var(--bs-font-sans-serif);
+  font-weight: 200;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--bs-font-sans-serif);
+  font-weight: 300;
+}

@@ -3,31 +3,42 @@
 // still uses Sass variables internally. So if you want to override bootstrap (or other sass
 // variables) you can do so here. Their CSS counterparts will include the changes you make here
 
-// $font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+// ── Mount Madonna Wisdom Library brand palette ───────────────────────────────
+// Source: logo SVG fills + computed styles on https://mountmadonnawisdomlibrary.org/home.
+// See .brand-reference/README.md for full provenance and screenshots.
 //
-// $gray-700: #495057 !default;  // Bootstrap $gray-700
-// $gray-100: #f8f9fa !default;  //           $gray-100
-//
-// $blue:   #2B4E72 !default;
-// $green:  #94BA65 !default;
-// $cyan:   #006666 !default;
-// $yellow: #ec9433 !default;
-// $red:    #CF4444 !default;
-// $dark:   darken($blue, 17%) !default;
-//
-// $primary: $blue !default;
-// $secondary: $gray-700 !default;
-// $success: $green !default;
-// $info: $cyan !default;
-// $warning: $yellow !default;
-// $danger: $red !default;
-// $light: $gray-100 !default;
-// $dark: $dark !default;
-//
-// $link-color: $info !default;
+// Primary maroon  #4E2222  letterforms, frame outline, nav-bar bg
+// Warm copper     #935934  "WISDOM LIBRARY" wordmark, accent links
+// Cream / beige   #E9DFD6  light backgrounds, logo frame fill
+// Site cream      #FFFDF4  header bg
+// Off-white       #FAFBFB  body bg
+// Body text       #212529  Bootstrap default near-black
+// Sunrise stops   #DAC9B9 → #CFB197 → #B37643 → #B1713C  logo mountain gradient
+
+$wl-maroon:        #4E2222;
+$wl-copper:        #935934;
+$wl-cream:         #E9DFD6;
+$wl-cream-header:  #FFFDF4;
+$wl-body-bg:       #FAFBFB;
+$wl-text:          #212529;
+
+// Bootstrap semantic colour overrides — bind the brand palette in so every
+// Bootstrap component (buttons, badges, alerts, etc.) inherits Mount Madonna
+// styling rather than the stock dspace blues.
+$primary:   $wl-maroon;
+$secondary: $wl-copper;
+$body-bg:   $wl-body-bg;
+$body-color: $wl-text;
+
+// Link colour follows the copper accent — matches the live site's link styling.
+$link-color: $wl-copper;
+$link-hover-color: darken($wl-copper, 10%);
 
 // Add new semantic colors here (you don't need to add existing semantic colors)
 @import '../../../styles/_variables.scss';
 $theme-custom-semantic-colors: (
+  "wl-maroon": $wl-maroon,
+  "wl-copper": $wl-copper,
+  "wl-cream":  $wl-cream,
 );
 $theme-colors: map-merge($theme-colors, $theme-custom-semantic-colors);
