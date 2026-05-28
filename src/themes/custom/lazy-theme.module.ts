@@ -28,7 +28,6 @@ import { BrowseByTaxonomyComponent } from './app/browse-by/browse-by-taxonomy/br
 import { BrowseByTitleComponent } from './app/browse-by/browse-by-title/browse-by-title.component';
 import { CollectionPageComponent } from './app/collection-page/collection-page.component';
 import { EditItemTemplatePageComponent } from './app/collection-page/edit-item-template-page/edit-item-template-page.component';
-import { CommunityListComponent } from './app/community-list-page/community-list/community-list.component';
 import { CommunityListPageComponent } from './app/community-list-page/community-list-page.component';
 import { CommunityPageComponent } from './app/community-page/community-page.component';
 import { CommunityPageSubCollectionListComponent } from './app/community-page/sections/sub-com-col-section/sub-collection-list/community-page-sub-collection-list.component';
@@ -151,7 +150,6 @@ const DECLARATIONS = [
   BreadcrumbsComponent,
   FeedbackComponent,
   FeedbackFormComponent,
-  CommunityListComponent,
   ComcolPageHandleComponent,
   AuthNavMenuComponent,
   ExpandableNavbarSectionComponent,
