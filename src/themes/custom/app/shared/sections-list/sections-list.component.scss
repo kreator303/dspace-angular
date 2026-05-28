@@ -1,0 +1,79 @@
+.bhbta-sections-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bhbta-sections-list__item {
+  border-bottom: 1px solid rgba(96, 44, 44, 0.08);
+}
+.bhbta-sections-list__item:last-child {
+  border-bottom: none;
+}
+
+.bhbta-sections-list__link {
+  display: block;
+  padding: 0.6rem 0;
+  text-decoration: none;
+  color: #212529;
+  transition: color 0.15s;
+}
+
+.bhbta-sections-list__link:hover {
+  color: #602C2C;
+  text-decoration: none;
+}
+.bhbta-sections-list__link:hover .bhbta-sections-list__arrow {
+  transform: translateX(3px);
+  color: #602C2C;
+}
+
+.bhbta-sections-list__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-weight: 600;
+  font-size: 1.02rem;
+}
+
+.bhbta-sections-list__name {
+  flex: 1;
+}
+
+.bhbta-sections-list__desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 300;
+  line-height: 1.4;
+  color: #484848;
+}
+
+.bhbta-sections-list__count {
+  font-size: 0.9rem;
+  color: #602C2C;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.bhbta-sections-list__count.is-zero {
+  // Slightly muted when zero, to keep it readable but de-emphasized
+  opacity: 0.45;
+}
+
+.bhbta-sections-list__arrow {
+  color: #484848;
+  font-size: 1.1rem;
+  transition: transform 0.15s, color 0.15s;
+}
+
+.bhbta-sections-list__loading {
+  color: #484848;
+  font-style: italic;
+  padding: 1rem 0;
+  margin: 0;
+}

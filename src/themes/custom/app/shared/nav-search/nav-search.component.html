@@ -1,0 +1,29 @@
+<button type="button"
+        class="bhbta-nav-search__trigger"
+        [class.is-expanded]="expanded()"
+        (click)="open(); $event.stopPropagation()"
+        aria-label="Open search">
+  Search
+</button>
+
+@if (expanded()) {
+  <div class="bhbta-nav-search__field" (click)="$event.stopPropagation()">
+    <input #input
+           class="bhbta-nav-search__input"
+           type="text"
+           [(ngModel)]="query"
+           (keydown.enter)="submit()"
+           (keydown.escape)="close()"
+           placeholder="Search the archive…"
+           aria-label="Search the archive">
+    <button type="button"
+            class="bhbta-nav-search__submit"
+            (click)="submit()"
+            aria-label="Submit search">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m21 21-4.3-4.3"></path>
+      </svg>
+    </button>
+  </div>
+}

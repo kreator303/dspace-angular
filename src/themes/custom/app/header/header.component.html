@@ -1,0 +1,20 @@
+<header class="bhbta-header">
+  <a class="bhbta-brand" routerLink="/home" aria-label="Home">
+    <img class="bhbta-brand__emblem" src="assets/images/bhbta-emblem.svg" alt="">
+    <span class="bhbta-brand__wordmark">
+      <span class="bhbta-brand__l1">BĀBĀ HARI DĀSA</span>
+      <span class="bhbta-brand__l2">TEACHINGS ARCHIVE</span>
+    </span>
+  </a>
+
+  <nav class="bhbta-nav" aria-label="Primary">
+    <a class="bhbta-nav__item" routerLink="/search" [queryParams]="{sort: 'dc.date.issued,desc'}">New</a>
+    <a class="bhbta-nav__item" routerLink="/community-list">Browse</a>
+    <bhbta-nav-search></bhbta-nav-search>
+  </nav>
+
+  <div class="bhbta-account">
+    <ds-auth-nav-menu></ds-auth-nav-menu>
+  </div>
+</header>
+<div class="bhbta-header-strip"></div>

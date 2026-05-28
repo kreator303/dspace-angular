@@ -1,4 +1,52 @@
 // Add any global css for the theme here
 
+// === BHBTA fonts (s110) ===
+// Cinzel for the brand wordmark / Cinzel for headings; Fira Sans for body.
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Fira+Sans:wght@200;300;400;500;600&display=swap');
+
+body {
+  font-family: "Fira Sans", -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+}
+
+// Inside the home page's BHBTA sections panel, hide the stock
+// ds-top-level-community-list's "Communities in DSpace" heading + lead.
+// Our `.bhbta-sections-heading` ("SECTIONS") already labels the panel.
+.bhbta-hero__right ds-top-level-community-list > div > h2,
+.bhbta-hero__right ds-top-level-community-list > div > p.lead {
+  display: none;
+}
+
 // imports the base global style
 @import '../../../styles/_global-styles.scss';
+
+/* Hide the stock DSpace navbar; our custom header has the nav. */
+ds-themed-navbar { display: none !important; }
+
+/* Kill the 1px hairline border that DSpace's header-navbar-wrapper adds —
+   the 6px maroon strip is the separator. Setting --ds-header-navbar-border-bottom-color
+   to transparent isn't enough because the 1px width still claims space. */
+div#header-navbar-wrapper { border-bottom: none !important; }
+
+/* Zero the my-cs (content-spacing) vertical margin on main + make a continuous
+   flex-column chain from main → router-outlet wrappers → home-page so the
+   home hero can fill all available vertical space without any cream bars. */
+main.my-cs {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  display: flex;
+  flex-direction: column;
+}
+main.my-cs > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+ds-home-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+

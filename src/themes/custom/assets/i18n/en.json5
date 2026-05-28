@@ -1,7 +1,16 @@
 {
-  // DSpace default: "All of DSpace"
-  "menu.section.browse_global": "Browse DSpace",
+  // === Baba Hari Dass Teachings Archive i18n overrides (s110) ===
 
-  // DSpace default: "DSpace Angular :: "
-  "repository.title.prefix": "DSpace :: ",
+  "repository.title.prefix": "Baba Hari Dass Teachings Archive :: ",
+
+  // Suppress the stock top-level-community-list's headings; our custom hero
+  // already labels the panel "SECTIONS".
+  "home.top-level-communities.head": "",
+  "home.top-level-communities.help": "",
+
+  // "Sections" rename (Communities → Sections, the site-wide brand decision).
+  "menu.section.browse_global": "Browse",
+  "menu.section.browse_global_communities_and_collections": "Browse",
+  "menu.section.browse_global_by_dateissued": "Filter",
+  "communityList.title": "Sections & Collections",
 }

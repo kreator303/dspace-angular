@@ -1,8 +1,40 @@
-// Override or add CSS variables for your theme here
+// === Baba Hari Dass Teachings Archive — CSS custom property overrides (s110) ===
+// These drive the visible chrome of DSpace 9: navbar, header, footer, home-news,
+// link colors. The SASS variable file controls Bootstrap-level vars (e.g. $primary);
+// this file controls the DSpace-specific surfaces.
 
 :root {
-  //--ds-header-logo-height: 80px;
-  //--ds-header-logo-height-xs: 50px;
-  //--ds-header-icon-color: #{$link-color};
-  //--ds-header-icon-color-hover: #{darken($link-color, 15%)};
+  // Header (top bar with logo + search + login)
+  --ds-header-bg:                    #{$bhbta-cream};
+  --ds-header-background-color:      #{$bhbta-cream};
+  --ds-header-icon-color:            #{$bhbta-maroon};
+  --ds-header-icon-color-hover:      #{$bhbta-maroon-hover};
+
+  // Navbar (the dark band beneath the header with Communities & Collections, etc.)
+  --ds-navbar-background-color:      #{$bhbta-maroon};
+  --ds-navbar-link-color:            #{$bhbta-cream};
+  --ds-navbar-link-color-hover:      #{$bhbta-cream-warm};
+  --ds-navbar-link-bg-color:         #{$bhbta-maroon};
+  --ds-navbar-link-bg-color-hover:   #{$bhbta-maroon-dark};
+
+  // Home news / banner surface
+  --ds-home-news-background-color:   #{$bhbta-maroon};
+  --ds-home-news-link-color:         #{$bhbta-cream};
+  --ds-home-news-link-hover-color:   #{$bhbta-cream-warm};
+
+  // Footer
+  --ds-footer-bg:                    #{$bhbta-maroon};
+  --ds-footer-color:                 #{$bhbta-cream};
+
+  // Bootstrap link color CSS var (used by Angular templates that bind to it)
+  --bs-link-color:                   #{$bhbta-maroon};
+  --bs-link-hover-color:             #{$bhbta-maroon-hover};
+  --bs-primary:                      #{$bhbta-maroon};
+  --bs-primary-rgb:                  96, 44, 44;
+
+  // Hide the stock DSpace header-navbar-wrapper bottom border. Our 6px maroon
+  // strip provides the separator already; the hairline below it creates a
+  // visible 1px cream line above the hero (s110 click-to-ID).
+  --ds-header-navbar-border-bottom-color: transparent;
+  --ds-header-navbar-border-top-color:    transparent;
 }

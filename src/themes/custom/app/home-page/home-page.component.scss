@@ -1,0 +1,130 @@
+// === Baba Hari Dass Teachings Archive — home hero (s110) ===
+// 50/50 hero with stacked Cinzel wordmark + scope search on the left,
+// SECTIONS panel with real top-level-community-list on the right.
+// Backdrop image (redwood/sunset) full-bleed behind both columns.
+
+// The DSpace shell is already flex-column (.inner-wrapper: flex, column,
+// min-height: 100vh) with main { flex-grow: 1 }. The hero should fill main
+// — let flex do the work instead of calc'ing against viewport.
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.bhbta-hero {
+  position: relative;
+  flex: 1;                              // fill the home-page host's height
+  display: flex;
+  align-items: center;
+  background-image:
+    linear-gradient(rgba(33, 20, 20, 0.20), rgba(33, 20, 20, 0.40)),
+    url("/assets/images/bhbta-backdrop.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 2.5rem 2rem;                 // tightened from 4rem to fit viewport
+  margin: 0 calc(50% - 50vw);           // full-bleed horizontally
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+.bhbta-hero__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.bhbta-hero__left {
+  color: #FFFDF4;
+}
+
+.bhbta-wordmark {
+  font-family: "Cinzel", serif;
+  text-align: left;
+  margin-bottom: 2.5rem;
+  // Text-shadow + soft black blur to lift the cream wordmark against the
+  // mixed-luminance backdrop (sunlight burnouts blow out otherwise).
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(0, 0, 0, 0.35);
+}
+.bhbta-wordmark__frame {
+  font-size: 1.45rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  color: #FFFDF4;
+  opacity: 0.85;
+  margin: 0;
+  line-height: 1.5;
+}
+.bhbta-wordmark__name {
+  font-size: 4rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  color: #FFFDF4;
+  margin: 2.5rem 0 0;   // matches .bhbta-wordmark margin-bottom (space below name → search)
+}
+
+.bhbta-hero__left ds-themed-search-form,
+.bhbta-hero__left ds-search-form {
+  display: block;
+  max-width: 460px;
+}
+
+// Hide the "Search" word inside the hero search button — keep the Font
+// Awesome magnifier icon only. Done via font-size: 0 trick (the text node
+// can't be CSS-hidden directly since it's a sibling of <i>).
+:host ::ng-deep .bhbta-hero ds-search-form button[type="submit"] {
+  font-size: 0;
+}
+:host ::ng-deep .bhbta-hero ds-search-form button[type="submit"] i {
+  font-size: 1rem;   // restore icon size
+}
+
+.bhbta-hero__right {
+  background: rgba(255, 253, 244, 0.92);
+  padding: 2rem 2.25rem;
+  border-radius: 2px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+.bhbta-sections-heading {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #602C2C;
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(96, 44, 44, 0.18);
+}
+
+// Hiding the stock community-list headers via a global selector — see
+// _global-styles.scss. (Can't use :host ::ng-deep reliably because the inner
+// h2 lives in a child component with its own view encapsulation.)
+
+@media (max-width: 900px) {
+  .bhbta-hero__inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .bhbta-wordmark__name {
+    font-size: 2.6rem;
+  }
+  .bhbta-wordmark__frame {
+    font-size: 0.75rem;
+  }
+  .bhbta-hero {
+    min-height: auto;
+    padding: 2.5rem 1rem;
+  }
+}

@@ -26,8 +26,24 @@
 //
 // $link-color: $info !default;
 
+// === Baba Hari Dass Teachings Archive brand (s110) ===
+// Brand maroon as primary (sourced from MMW capture #602C2C)
+// Cream surface, body remains Bootstrap text gray
+$bhbta-maroon:       #602C2C;
+$bhbta-maroon-dark:  #4E2222;
+$bhbta-maroon-hover: #944444;
+$bhbta-cream:        #FFFDF4;
+$bhbta-cream-warm:   #E3D2C8;
+
+$primary:   $bhbta-maroon;
+$link-color: $bhbta-maroon;
+$body-bg:    $bhbta-cream;
+
 // Add new semantic colors here (you don't need to add existing semantic colors)
 @import '../../../styles/_variables.scss';
 $theme-custom-semantic-colors: (
+  "bhbta-maroon":      $bhbta-maroon,
+  "bhbta-maroon-dark": $bhbta-maroon-dark,
+  "bhbta-cream":       $bhbta-cream,
 );
 $theme-colors: map-merge($theme-colors, $theme-custom-semantic-colors);

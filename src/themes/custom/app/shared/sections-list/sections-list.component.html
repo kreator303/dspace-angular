@@ -1,0 +1,21 @@
+@if (loading()) {
+  <p class="bhbta-sections-list__loading">Loading sections…</p>
+}
+@if (!loading()) {
+  <ul class="bhbta-sections-list">
+    @for (s of sections(); track s.uuid) {
+      <li class="bhbta-sections-list__item">
+        <a class="bhbta-sections-list__link" [routerLink]="['/communities', s.uuid]">
+          <span class="bhbta-sections-list__row">
+            <span class="bhbta-sections-list__name">{{ s.name }}</span>
+            <span class="bhbta-sections-list__count" [class.is-zero]="s.count === 0">{{ s.count }}</span>
+            <span class="bhbta-sections-list__arrow">→</span>
+          </span>
+          @if (s.description) {
+            <span class="bhbta-sections-list__desc">{{ s.description }}</span>
+          }
+        </a>
+      </li>
+    }
+  </ul>
+}

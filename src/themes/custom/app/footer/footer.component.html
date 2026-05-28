@@ -1,0 +1,19 @@
+<footer class="bhbta-footer">
+  <span class="bhbta-footer__row">
+    <span class="bhbta-footer__label">AI:</span>
+    <span class="bhbta-footer__url">mcp.babaharidassteachingsarchive.org</span>
+    <button class="bhbta-footer__copy" type="button" (click)="copyMcpUrl()"
+            [attr.aria-label]="copied() ? 'Copied' : 'Copy MCP URL'">
+      @if (copied()) {
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="bhbta-footer__copy-icon">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      } @else {
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="bhbta-footer__copy-icon">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      }
+    </button>
+  </span>
+</footer>
