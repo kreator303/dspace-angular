@@ -30,13 +30,17 @@
   margin-left: -2px;
   border-left: 2px solid transparent;
   color: var(--bhbta-maroon);
-  text-decoration: none;
+  text-decoration-line: underline;
+  text-decoration-color: var(--bhbta-maroon);
+  text-decoration-thickness: 0.3ex;
+  text-underline-offset: 0.3ex;
   font-size: 0.92rem;
   line-height: 1.3;
 }
 .bhbta-browse__toc li a:hover {
   border-left-color: var(--bhbta-copper);
   color: var(--bhbta-copper);
+  text-decoration-color: var(--bhbta-copper);
 }
 
 /* Index */
@@ -84,13 +88,17 @@
 .bhbta-browse__collections li a {
   display: block;
   padding: 0.28rem 0 0.28rem 1rem;
-  color: #212529;
-  text-decoration: none;
+  color: var(--bhbta-maroon);
+  text-decoration-line: underline;
+  text-decoration-color: var(--bhbta-maroon);
+  text-decoration-thickness: 0.3ex;
+  text-underline-offset: 0.3ex;
   font-size: 0.96rem;
   line-height: 1.35;
 }
 .bhbta-browse__collections li a:hover {
-  color: var(--bhbta-maroon);
+  color: var(--bhbta-copper);
+  text-decoration-color: var(--bhbta-copper);
 }
 
 .bhbta-browse__empty {
