@@ -1,12 +1,23 @@
 // Add any global css for the theme here
 
-// === BHBTA fonts (s110) ===
-// Cinzel for the brand wordmark / Cinzel for headings; Fira Sans for body.
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Fira+Sans:wght@200;300;400;500;600&display=swap');
+// === BHBTA fonts (s111, parent-aligned) ===
+// Marcellus display serif (headings/wordmark) + Montserrat body — matching the
+// parent org site mountmadonna.org. Family names single-sourced as
+// --bhbta-font-display / --bhbta-font-body (see _theme_css_variable_overrides.scss).
+@import url('https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 body {
-  font-family: "Fira Sans", -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 300;
+  font-family: var(--bhbta-font-body);
+  font-weight: 400;
+}
+
+// Marcellus on the primary heading levels (it's a 400-only face — elegant for
+// titles). h4–h6 stay Montserrat (UI-chrome labels). The uppercase + wide-
+// letter-spacing brand treatment is applied per-surface (wordmark, kicker
+// labels), NOT blanket-applied to all headings — archive item/collection
+// titles carry Sanskrit IAST + mixed case that shouldn't be force-uppercased.
+h1, h2, h3 {
+  font-family: var(--bhbta-font-display);
 }
 
 // Inside the home page's BHBTA sections panel, hide the stock
@@ -22,6 +33,33 @@ body {
 
 /* Hide the stock DSpace navbar; our custom header has the nav. */
 ds-themed-navbar { display: none !important; }
+
+/* Icon-only login trigger. ds-auth-nav-menu renders a ".dropdownLogin" button
+   whose text is " Log In " — hide the text and render a maroon person glyph
+   (stroke-matched to the nav icons). Only targets .dropdownLogin (logged-out),
+   so a logged-in librarian's user dropdown is untouched. The button keeps its
+   aria-label="Log In", so the icon stays accessible. Global (not component)
+   CSS so it reaches the nested ds-auth-nav-menu DOM without ::ng-deep. */
+.bhbta-account .dropdownLogin {
+  font-size: 0 !important;
+  color: var(--bhbta-maroon) !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center;
+}
+.bhbta-account .dropdownLogin::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: var(--bhbta-maroon);
+  opacity: 0.8;
+  transition: opacity 0.15s;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>') center / contain no-repeat;
+          mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>') center / contain no-repeat;
+}
+.bhbta-account .dropdownLogin:hover::before { opacity: 1; }
 
 /* Kill the 1px hairline border that DSpace's header-navbar-wrapper adds —
    the 6px maroon strip is the separator. Setting --ds-header-navbar-border-bottom-color
@@ -48,5 +86,117 @@ ds-home-page {
   flex-direction: column;
   flex: 1;
   min-height: 0;
+}
+
+/* === Internal-page Tier 1 restyle (s111) ===
+   Brands DSpace's stock section / collection / search structure via CSS only
+   (no template/TS overrides). Targets stock DSpace classes, so the same
+   treatment carries to /communities, /collections, and /search alike. */
+
+/* Breadcrumb: maroon ribbon (bg set via --ds-breadcrumb-bg above), sand
+   uppercase kicker text. margin-bottom restores breathing room between the
+   ribbon and the page heading — needed because the home-hero fix zeroes
+   main's top margin globally. Only affects pages that have a breadcrumb,
+   so the home hero is unaffected. */
+.nav-breadcrumb {
+  margin-bottom: 1.75rem;
+}
+.nav-breadcrumb .breadcrumb,
+nav[aria-label="breadcrumb"] .breadcrumb {
+  color: var(--bhbta-sand);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+}
+.breadcrumb-item.active { color: var(--bhbta-cream) !important; }
+
+/* ComCol page title — Marcellus maroon with a short copper underline accent
+   (the parent org's interior-page signature). */
+ds-comcol-page-header h1 {
+  font-family: var(--bhbta-font-display);
+  color: var(--bhbta-maroon);
+  font-size: 2.4rem;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.55rem;
+}
+ds-comcol-page-header h1::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin-top: 0.55rem;
+  background: var(--bhbta-copper);
+}
+
+/* "Browse" label → copper kicker; tabs flattened from the bootstrap
+   list-group into clean underline tabs. */
+.comcol-browse-label {
+  color: var(--bhbta-copper);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+}
+.comcol-browse .list-group-item {
+  font-family: var(--bhbta-font-display);
+  color: var(--bhbta-maroon);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0 !important;
+  letter-spacing: 0.05em;
+  padding: 0.45rem 0.9rem;
+}
+.comcol-browse .list-group-item:hover { color: var(--bhbta-copper); background: transparent; }
+.comcol-browse .list-group-item.active {
+  background: transparent;
+  color: var(--bhbta-maroon);
+  border-bottom-color: var(--bhbta-maroon);
+  font-weight: 600;
+}
+
+/* Facet sidebar headings → copper kicker + Marcellus filter labels. */
+ds-search-filters h3 {
+  font-family: var(--bhbta-font-display);
+  color: var(--bhbta-copper);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.92rem;
+}
+ds-search-filters .filter-name .h4 {
+  font-family: var(--bhbta-font-display);
+  color: var(--bhbta-maroon);
+  font-size: 1rem;
+}
+
+/* Search-result rows → carded: subtle frame + hover lift, Marcellus maroon
+   title (copper on hover). */
+ds-item-search-result-list-element {
+  display: block;
+  border: 1px solid rgba(78, 34, 34, 0.12);
+  border-radius: 3px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 0.85rem;
+  background: #fff;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+ds-item-search-result-list-element:hover {
+  border-color: rgba(78, 34, 34, 0.32);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
+}
+ds-item-search-result-list-element a.lead {
+  font-family: var(--bhbta-font-display);
+  color: var(--bhbta-maroon);
+  font-size: 1.18rem;
+  line-height: 1.3;
+}
+ds-item-search-result-list-element a.lead:hover { color: var(--bhbta-copper); }
+
+/* Stock Bootstrap "info" badges (Item type, etc.) were bright blue — re-tint
+   to a sand pill with maroon text so they sit in the palette. */
+.badge.bg-info {
+  background-color: var(--bhbta-sand) !important;
+  color: var(--bhbta-maroon) !important;
 }
 

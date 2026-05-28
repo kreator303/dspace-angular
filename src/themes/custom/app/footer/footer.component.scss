@@ -1,9 +1,9 @@
 .bhbta-footer {
-  background: #602C2C;
-  color: #FFFDF4;
+  background: var(--bhbta-maroon);
+  color: var(--bhbta-cream);
   padding: calc(1rem + 1px) 2rem 1rem;
   text-align: center;
-  font-family: "Cinzel", serif;
+  font-family: var(--bhbta-font-display);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.28em;
@@ -45,7 +45,7 @@
   border: none;
   padding: 0.2rem;
   margin-left: 0.2rem;
-  color: #FFFDF4;
+  color: var(--bhbta-cream);
   opacity: 0.6;
   cursor: pointer;
   display: inline-flex;

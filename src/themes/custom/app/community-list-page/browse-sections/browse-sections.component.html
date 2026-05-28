@@ -1,0 +1,36 @@
+<div class="bhbta-browse" *ngIf="!loading(); else loadingTpl">
+  <!-- Sticky table of contents -->
+  <nav class="bhbta-browse__toc" aria-label="Sections">
+    <p class="bhbta-browse__toc-label">On this page</p>
+    <ul>
+      <li *ngFor="let s of sections()">
+        <a [href]="'#' + s.anchor">{{ s.name }}</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Always-expanded Section → Subsection → Collection index -->
+  <div class="bhbta-browse__index">
+    <section class="bhbta-browse__section" *ngFor="let s of sections()" [id]="s.anchor">
+      <h2 class="bhbta-browse__section-title">
+        <a [routerLink]="['/communities', s.uuid]">{{ s.name }}</a>
+      </h2>
+
+      <div class="bhbta-browse__sub" *ngFor="let sub of s.subsections">
+        <h3 class="bhbta-browse__sub-title">
+          <a [routerLink]="['/communities', sub.uuid]">{{ sub.name }}</a>
+        </h3>
+        <ul class="bhbta-browse__collections" *ngIf="sub.collections.length; else noCols">
+          <li *ngFor="let col of sub.collections">
+            <a [routerLink]="['/collections', col.uuid]">{{ col.name }}</a>
+          </li>
+        </ul>
+        <ng-template #noCols><p class="bhbta-browse__empty">No collections yet</p></ng-template>
+      </div>
+    </section>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <p class="bhbta-browse__loading">Loading sections…</p>
+</ng-template>

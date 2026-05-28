@@ -1,5 +1,5 @@
 // === Baba Hari Dass Teachings Archive — home hero (s110) ===
-// 50/50 hero with stacked Cinzel wordmark + scope search on the left,
+// 50/50 hero with stacked Marcellus wordmark + scope search on the left,
 // SECTIONS panel with real top-level-community-list on the right.
 // Backdrop image (redwood/sunset) full-bleed behind both columns.
 
@@ -40,11 +40,11 @@
 }
 
 .bhbta-hero__left {
-  color: #FFFDF4;
+  color: var(--bhbta-cream);
 }
 
 .bhbta-wordmark {
-  font-family: "Cinzel", serif;
+  font-family: var(--bhbta-font-display);
   text-align: left;
   margin-bottom: 2.5rem;
   // Text-shadow + soft black blur to lift the cream wordmark against the
@@ -57,7 +57,7 @@
   font-size: 1.45rem;
   font-weight: 500;
   letter-spacing: 0.32em;
-  color: #FFFDF4;
+  color: var(--bhbta-cream);
   opacity: 0.85;
   margin: 0;
   line-height: 1.5;
@@ -67,7 +67,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   line-height: 1.1;
-  color: #FFFDF4;
+  color: var(--bhbta-cream);
   margin: 2.5rem 0 0;   // matches .bhbta-wordmark margin-bottom (space below name → search)
 }
 
@@ -97,15 +97,15 @@
 }
 
 .bhbta-sections-heading {
-  font-family: "Cinzel", serif;
+  font-family: var(--bhbta-font-display);
   font-weight: 700;
   font-size: 1.4rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #602C2C;
+  color: var(--bhbta-maroon);
   margin: 0 0 1.25rem 0;
   padding-bottom: 0.85rem;
-  border-bottom: 1px solid rgba(96, 44, 44, 0.18);
+  border-bottom: 1px solid rgba(78, 34, 34, 0.18);
 }
 
 // Hiding the stock community-list headers via a global selector — see

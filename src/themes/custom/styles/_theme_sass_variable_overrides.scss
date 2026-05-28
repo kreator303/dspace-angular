@@ -26,14 +26,23 @@
 //
 // $link-color: $info !default;
 
-// === Baba Hari Dass Teachings Archive brand (s110) ===
-// Brand maroon as primary (sourced from MMW capture #602C2C)
-// Cream surface, body remains Bootstrap text gray
-$bhbta-maroon:       #602C2C;
-$bhbta-maroon-dark:  #4E2222;
-$bhbta-maroon-hover: #944444;
-$bhbta-cream:        #FFFDF4;
-$bhbta-cream-warm:   #E3D2C8;
+// === Baba Hari Dass Teachings Archive brand (s110 → s111 parent-aligned) ===
+// Palette + type aligned to the parent org site mountmadonna.org (computed
+// styles captured via Playwright s111, mockups/mountmadonna-capture/). Maroon
+// #4E2222, cream #FFFDF4, sand #E3D2C8, copper #B1713C; Marcellus display +
+// Montserrat body. These SASS vars are the single source — exposed as
+// --bhbta-* CSS custom properties in _theme_css_variable_overrides.scss so
+// every component consumes var(--bhbta-*) instead of re-hardcoding literals.
+$bhbta-maroon:       #4E2222;   // parent body/heading maroon (was #602C2C)
+$bhbta-maroon-dark:  #3A1A1A;   // deeper shade for hover-bg / pressed states
+$bhbta-maroon-hover: #944444;   // lighter tint for link/icon hover
+$bhbta-cream:        #FFFDF4;   // page background (matches parent)
+$bhbta-cream-warm:   #E3D2C8;   // "sand" accent (parent h2 color)
+$bhbta-copper:       #B1713C;   // copper accent (parent h3 / kicker labels)
+
+// Display serif + body sans, matching the parent org site.
+$bhbta-font-display: "Marcellus", Georgia, "Times New Roman", serif;
+$bhbta-font-body:    "Montserrat", -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
 $primary:   $bhbta-maroon;
 $link-color: $bhbta-maroon;
@@ -45,5 +54,6 @@ $theme-custom-semantic-colors: (
   "bhbta-maroon":      $bhbta-maroon,
   "bhbta-maroon-dark": $bhbta-maroon-dark,
   "bhbta-cream":       $bhbta-cream,
+  "bhbta-copper":      $bhbta-copper,
 );
 $theme-colors: map-merge($theme-colors, $theme-custom-semantic-colors);

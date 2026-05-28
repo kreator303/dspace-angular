@@ -8,6 +8,7 @@ import {
 import { RouterLink } from '@angular/router';
 
 import { APP_CONFIG, AppConfig } from '../../../../../config/app-config.interface';
+import { cleanSectionName, compareSections } from '../section-order';
 
 interface Section {
   uuid: string;
@@ -42,12 +43,12 @@ export class BhbtaSectionsListComponent implements OnInit {
       const commJson = await commResp.json();
       const comms = commJson._embedded?.communities ?? [];
 
-      // Sort by name first (so the numeric prefix on each name controls order),
-      // then strip the "N. " prefix from the display name.
-      comms.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
+      // Order + display-name cleaning come from the shared section-order module
+      // (single source of truth, also used by the browse-page override).
+      comms.sort(compareSections);
 
       const withCounts: Section[] = await Promise.all(comms.map(async (c: { uuid: string; handle: string; name: string; metadata?: Record<string, Array<{value: string}>> }) => {
-        const displayName = c.name.replace(/^\s*\d+\.\s*/, '');
+        const displayName = cleanSectionName(c.name);
         const description = c.metadata?.['dc.description.abstract']?.[0]?.value ?? '';
         try {
           const r = await fetch(`${this.restBase}/discover/search/objects?dsoType=item&scope=${c.uuid}&size=1`);

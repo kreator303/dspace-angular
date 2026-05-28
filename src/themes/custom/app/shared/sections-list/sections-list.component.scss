@@ -5,7 +5,7 @@
 }
 
 .bhbta-sections-list__item {
-  border-bottom: 1px solid rgba(96, 44, 44, 0.08);
+  border-bottom: 1px solid rgba(78, 34, 34, 0.08);
 }
 .bhbta-sections-list__item:last-child {
   border-bottom: none;
@@ -20,12 +20,12 @@
 }
 
 .bhbta-sections-list__link:hover {
-  color: #602C2C;
+  color: var(--bhbta-maroon);
   text-decoration: none;
 }
 .bhbta-sections-list__link:hover .bhbta-sections-list__arrow {
   transform: translateX(3px);
-  color: #602C2C;
+  color: var(--bhbta-maroon);
 }
 
 .bhbta-sections-list__row {
@@ -56,7 +56,7 @@
 
 .bhbta-sections-list__count {
   font-size: 0.9rem;
-  color: #602C2C;
+  color: var(--bhbta-maroon);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
 }

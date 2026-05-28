@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 /**
  * Nav-bar search affordance: collapsed = bare "SEARCH" word styled to match
- * the other Cinzel nav items. Click expands an input field to the right with
+ * the other Marcellus nav items. Click expands an input field to the right with
  * a maroon submit button (icon on its right edge). Click-outside or scroll
  * collapses; pressing Enter or clicking the maroon button submits to /search.
  */

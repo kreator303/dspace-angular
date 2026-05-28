@@ -4,6 +4,18 @@
 // this file controls the DSpace-specific surfaces.
 
 :root {
+  // === BHBTA brand tokens (single source = _theme_sass_variable_overrides.scss) ===
+  // Components consume these via var(--bhbta-*) instead of hardcoding hex/font
+  // literals — change the brand in ONE place (the SASS file) and it propagates.
+  --bhbta-maroon:        #{$bhbta-maroon};
+  --bhbta-maroon-dark:   #{$bhbta-maroon-dark};
+  --bhbta-maroon-hover:  #{$bhbta-maroon-hover};
+  --bhbta-cream:         #{$bhbta-cream};
+  --bhbta-sand:          #{$bhbta-cream-warm};
+  --bhbta-copper:        #{$bhbta-copper};
+  --bhbta-font-display:  #{$bhbta-font-display};
+  --bhbta-font-body:     #{$bhbta-font-body};
+
   // Header (top bar with logo + search + login)
   --ds-header-bg:                    #{$bhbta-cream};
   --ds-header-background-color:      #{$bhbta-cream};
@@ -26,11 +38,18 @@
   --ds-footer-bg:                    #{$bhbta-maroon};
   --ds-footer-color:                 #{$bhbta-cream};
 
+  // Breadcrumb ribbon — maroon band with sand links (stock default was the
+  // cool $gray-200, which clashed with the warm palette). Overriding the var
+  // sidesteps the base .breadcrumb { ... !important } rule.
+  --ds-breadcrumb-bg:                #{$bhbta-maroon};
+  --ds-breadcrumb-link-color:        #{$bhbta-cream-warm};
+  --ds-breadcrumb-link-active-color: #{$bhbta-cream};
+
   // Bootstrap link color CSS var (used by Angular templates that bind to it)
   --bs-link-color:                   #{$bhbta-maroon};
   --bs-link-hover-color:             #{$bhbta-maroon-hover};
   --bs-primary:                      #{$bhbta-maroon};
-  --bs-primary-rgb:                  96, 44, 44;
+  --bs-primary-rgb:                  78, 34, 34;
 
   // Hide the stock DSpace header-navbar-wrapper bottom border. Our 6px maroon
   // strip provides the separator already; the hairline below it creates a

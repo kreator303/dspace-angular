@@ -7,8 +7,8 @@
 .bhbta-nav-search__trigger {
   background: transparent;
   border: none;
-  color: #602C2C;
-  font-family: "Cinzel", serif;
+  color: var(--bhbta-maroon);
+  font-family: var(--bhbta-font-display);
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -18,14 +18,14 @@
   position: relative;
   transition: color 0.15s;
 }
-.bhbta-nav-search__trigger:hover { color: #944444; }
+.bhbta-nav-search__trigger:hover { color: var(--bhbta-maroon-hover); }
 
 .bhbta-nav-search__trigger::after {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: -2px;
   height: 2px;
-  background: #602C2C;
+  background: var(--bhbta-maroon);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.18s ease;
@@ -42,8 +42,8 @@
   transform: translateY(-50%);
   display: inline-flex;
   align-items: stretch;
-  background: #FFFDF4;
-  border: 1px solid rgba(96, 44, 44, 0.3);
+  background: var(--bhbta-cream);
+  border: 1px solid rgba(78, 34, 34, 0.3);
   border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -55,7 +55,7 @@
   outline: none;
   background: transparent;
   padding: 0.5rem 0.85rem;
-  font-family: "Fira Sans", sans-serif;
+  font-family: var(--bhbta-font-body);
   font-weight: 300;
   font-size: 0.95rem;
   color: #212529;
@@ -67,8 +67,8 @@
 }
 
 .bhbta-nav-search__submit {
-  background: #602C2C;
-  color: #FFFDF4;
+  background: var(--bhbta-maroon);
+  color: var(--bhbta-cream);
   border: none;
   padding: 0 0.85rem;
   cursor: pointer;
@@ -77,7 +77,7 @@
   justify-content: center;
   transition: background 0.15s;
 }
-.bhbta-nav-search__submit:hover { background: #944444; }
+.bhbta-nav-search__submit:hover { background: var(--bhbta-maroon-hover); }
 .bhbta-nav-search__submit svg {
   width: 16px;
   height: 16px;

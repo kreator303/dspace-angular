@@ -1,5 +1,5 @@
 .bhbta-header {
-  background: #FFFDF4;
+  background: var(--bhbta-cream);
   // No bottom border — the 6px maroon strip immediately below is the separator.
   // A hairline was creating a visible 1px line above the hero (s110).
   padding: 0.9rem 2rem;
@@ -17,7 +17,7 @@
   gap: 0.85rem;
   text-decoration: none;
   justify-self: start;
-  color: #602C2C;
+  color: var(--bhbta-maroon);
 }
 .bhbta-brand:hover { text-decoration: none; }
 
@@ -28,11 +28,11 @@
 }
 
 .bhbta-brand__wordmark {
-  font-family: "Cinzel", serif;
+  font-family: var(--bhbta-font-display);
   font-weight: 500;
   letter-spacing: 0.18em;
   line-height: 1.15;
-  color: #602C2C;
+  color: var(--bhbta-maroon);
 }
 .bhbta-brand__l1 { display: block; font-size: 0.92rem; }
 .bhbta-brand__l2 {
@@ -49,9 +49,9 @@
   justify-self: center;
 }
 .bhbta-nav__item {
-  color: #602C2C;
+  color: var(--bhbta-maroon);
   text-decoration: none;
-  font-family: "Cinzel", serif;
+  font-family: var(--bhbta-font-display);
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -67,14 +67,14 @@
   position: absolute;
   left: 0; right: 0; bottom: -2px;
   height: 2px;
-  background: #602C2C;
+  background: var(--bhbta-maroon);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.18s ease;
 }
 .bhbta-nav__item:hover {
   text-decoration: none;
-  color: #602C2C;
+  color: var(--bhbta-maroon);
 }
 .bhbta-nav__item:hover::after { transform: scaleX(1); }
 .bhbta-nav__icon {
@@ -98,11 +98,8 @@
 .bhbta-account:hover { opacity: 1; }
 
 // (Search is rendered by bhbta-nav-search — see its own component SCSS.)
-
-.bhbta-header-strip {
-  background: #602C2C;
-  height: 6px;
-}
+// The former 6px maroon header strip was dropped (s111): on internal pages the
+// maroon breadcrumb ribbon is the separator; on home the header meets the hero.
 
 @media (max-width: 900px) {
   .bhbta-header {
