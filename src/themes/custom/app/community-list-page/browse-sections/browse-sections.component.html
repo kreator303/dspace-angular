@@ -14,15 +14,21 @@
     <section class="bhbta-browse__section" *ngFor="let s of sections()" [id]="s.anchor">
       <h2 class="bhbta-browse__section-title">
         <a [routerLink]="['/communities', s.uuid]">{{ s.name }}</a>
+        <span class="bhbta-browse__count" [class.is-zero]="!s.count"
+              [attr.aria-label]="s.count + ' items'">{{ s.count }}</span>
       </h2>
 
       <div class="bhbta-browse__sub" *ngFor="let sub of s.subsections">
         <h3 class="bhbta-browse__sub-title">
           <a [routerLink]="['/communities', sub.uuid]">{{ sub.name }}</a>
+          <span class="bhbta-browse__count" [class.is-zero]="!sub.count"
+                [attr.aria-label]="sub.count + ' items'">{{ sub.count }}</span>
         </h3>
         <ul class="bhbta-browse__collections" *ngIf="sub.collections.length; else noCols">
           <li *ngFor="let col of sub.collections">
             <a [routerLink]="['/collections', col.uuid]">{{ col.name }}</a>
+            <span class="bhbta-browse__count" [class.is-zero]="!col.count"
+                  [attr.aria-label]="col.count + ' items'">{{ col.count }}</span>
           </li>
         </ul>
         <ng-template #noCols><p class="bhbta-browse__empty">No collections yet</p></ng-template>

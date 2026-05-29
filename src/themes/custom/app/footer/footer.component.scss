@@ -1,6 +1,6 @@
 .bhbta-footer {
-  background: var(--bhbta-maroon);
-  color: var(--bhbta-cream);
+  background: var(--bhbta-band-bg);
+  color: var(--bhbta-on-brand);
   padding: calc(1rem + 1px) 2rem 1rem;
   text-align: center;
   font-family: var(--bhbta-font-display);
@@ -45,7 +45,7 @@
   border: none;
   padding: 0.2rem;
   margin-left: 0.2rem;
-  color: var(--bhbta-cream);
+  color: var(--bhbta-on-brand);
   opacity: 0.6;
   cursor: pointer;
   display: inline-flex;

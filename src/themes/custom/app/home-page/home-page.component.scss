@@ -40,7 +40,7 @@
 }
 
 .bhbta-hero__left {
-  color: var(--bhbta-cream);
+  color: var(--bhbta-on-brand);
 }
 
 .bhbta-wordmark {
@@ -57,7 +57,7 @@
   font-size: 1.45rem;
   font-weight: 500;
   letter-spacing: 0.32em;
-  color: var(--bhbta-cream);
+  color: var(--bhbta-on-brand);
   opacity: 0.85;
   margin: 0;
   line-height: 1.5;
@@ -67,7 +67,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   line-height: 1.1;
-  color: var(--bhbta-cream);
+  color: var(--bhbta-on-brand);
   margin: 2.5rem 0 0;   // matches .bhbta-wordmark margin-bottom (space below name → search)
 }
 
@@ -102,10 +102,10 @@
   font-size: 1.4rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--bhbta-maroon);
+  color: var(--bhbta-heading);
   margin: 0 0 1.25rem 0;
   padding-bottom: 0.85rem;
-  border-bottom: 1px solid rgba(78, 34, 34, 0.18);
+  border-bottom: 1px solid var(--bhbta-border);
 }
 
 // Hiding the stock community-list headers via a global selector — see

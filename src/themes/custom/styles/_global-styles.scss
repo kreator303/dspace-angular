@@ -9,7 +9,7 @@
 body {
   font-family: var(--bhbta-font-body);
   font-weight: 400;
-  color: var(--bhbta-maroon); // warm body text, adopted from parent site
+  color: var(--bhbta-text); // semantic role (resolves to near-black ink) — s112
 }
 
 // Marcellus on the primary heading levels (it's a 400-only face — elegant for
@@ -43,7 +43,7 @@ ds-themed-navbar { display: none !important; }
    CSS so it reaches the nested ds-auth-nav-menu DOM without ::ng-deep. */
 .bhbta-account .dropdownLogin {
   font-size: 0 !important;
-  color: var(--bhbta-maroon) !important;
+  color: var(--bhbta-brand) !important;
   padding: 0 !important;
   box-shadow: none !important;
   display: inline-flex !important;
@@ -54,7 +54,7 @@ ds-themed-navbar { display: none !important; }
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-color: var(--bhbta-maroon);
+  background-color: var(--bhbta-brand);
   opacity: 0.8;
   transition: opacity 0.15s;
   -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>') center / contain no-repeat;
@@ -104,18 +104,18 @@ ds-home-page {
 }
 .nav-breadcrumb .breadcrumb,
 nav[aria-label="breadcrumb"] .breadcrumb {
-  color: var(--bhbta-sand);
+  color: var(--bhbta-accent-soft);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.7rem;
 }
-.breadcrumb-item.active { color: var(--bhbta-cream) !important; }
+.breadcrumb-item.active { color: var(--bhbta-on-brand) !important; }
 
 /* ComCol page title — Marcellus maroon with a short copper underline accent
    (the parent org's interior-page signature). */
 ds-comcol-page-header h1 {
   font-family: var(--bhbta-font-display);
-  color: var(--bhbta-maroon);
+  color: var(--bhbta-heading);
   font-size: 2.4rem;
   letter-spacing: 0.01em;
   margin-bottom: 0.4rem;
@@ -127,13 +127,13 @@ ds-comcol-page-header h1::after {
   width: 56px;
   height: 3px;
   margin-top: 0.55rem;
-  background: var(--bhbta-copper);
+  background: var(--bhbta-accent);
 }
 
 /* "Browse" label → copper kicker; tabs flattened from the bootstrap
    list-group into clean underline tabs. */
 .comcol-browse-label {
-  color: var(--bhbta-copper);
+  color: var(--bhbta-accent);
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.95rem;
@@ -141,7 +141,7 @@ ds-comcol-page-header h1::after {
 }
 .comcol-browse .list-group-item {
   font-family: var(--bhbta-font-body); // UI chrome: Montserrat, not Marcellus
-  color: var(--bhbta-maroon);
+  color: var(--bhbta-brand);
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
@@ -149,25 +149,25 @@ ds-comcol-page-header h1::after {
   letter-spacing: 0.05em;
   padding: 0.45rem 0.9rem;
 }
-.comcol-browse .list-group-item:hover { color: var(--bhbta-copper); background: transparent; }
+.comcol-browse .list-group-item:hover { color: var(--bhbta-link-hover); background: transparent; }
 .comcol-browse .list-group-item.active {
   background: transparent;
-  color: var(--bhbta-maroon);
-  border-bottom-color: var(--bhbta-maroon);
+  color: var(--bhbta-brand);
+  border-bottom-color: var(--bhbta-brand);
   font-weight: 600;
 }
 
 /* Facet sidebar headings → copper kicker + Marcellus filter labels. */
 ds-search-filters h3 {
   font-family: var(--bhbta-font-display);
-  color: var(--bhbta-copper);
+  color: var(--bhbta-accent);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.92rem;
 }
 ds-search-filters .filter-name .h4 {
   font-family: var(--bhbta-font-body); // UI chrome: Montserrat, not Marcellus
-  color: var(--bhbta-maroon);
+  color: var(--bhbta-heading);
   font-size: 1rem;
 }
 
@@ -175,7 +175,7 @@ ds-search-filters .filter-name .h4 {
    title (copper on hover). */
 ds-item-search-result-list-element {
   display: block;
-  border: 1px solid rgba(78, 34, 34, 0.12);
+  border: 1px solid var(--bhbta-border-subtle);
   border-radius: 3px;
   padding: 1rem 1.1rem;
   margin-bottom: 0.85rem;
@@ -183,13 +183,13 @@ ds-item-search-result-list-element {
   transition: box-shadow 0.15s, border-color 0.15s;
 }
 ds-item-search-result-list-element:hover {
-  border-color: rgba(78, 34, 34, 0.32);
+  border-color: var(--bhbta-border-strong);
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
 }
 ds-item-search-result-list-element a.lead {
   font-family: var(--bhbta-font-display);
   font-weight: 400; // Marcellus is 400-only; avoids faux-weight
-  color: var(--bhbta-maroon);
+  color: var(--bhbta-text); // link text (semantic role; resolves to ink)
   font-size: 1.18rem;
   line-height: 1.3;
 }
@@ -200,20 +200,20 @@ ds-item-search-result-list-element a.lead {
 ds-item-search-result-list-element a.lead,
 ds-comcol-page-content a {
   text-decoration-line: underline;
-  text-decoration-color: var(--bhbta-maroon);
+  text-decoration-color: var(--bhbta-link-underline);
   text-decoration-thickness: 0.3ex;
   text-underline-offset: 0.3ex;
 }
 ds-item-search-result-list-element a.lead:hover,
 ds-comcol-page-content a:hover {
-  color: var(--bhbta-copper);
-  text-decoration-color: var(--bhbta-copper);
+  color: var(--bhbta-link-hover);
+  text-decoration-color: var(--bhbta-link-hover);
 }
 
 /* Stock Bootstrap "info" badges (Item type, etc.) were bright blue — re-tint
    to a sand pill with maroon text so they sit in the palette. */
 .badge.bg-info {
-  background-color: var(--bhbta-sand) !important;
-  color: var(--bhbta-maroon) !important;
+  background-color: var(--bhbta-accent-soft) !important;
+  color: var(--bhbta-brand) !important;
 }
 

@@ -33,21 +33,53 @@ functional UI chrome (facet names, tabs, counts) — those are Montserrat.
 
 ## 2. Color tokens
 
-Single-sourced in `styles/_theme_sass_variable_overrides.scss`, exposed as
-`--bhbta-*` CSS custom properties (`styles/_theme_css_variable_overrides.scss`)
-so every component consumes `var(--bhbta-*)` — never re-hardcode a hex.
+**Two layers (s112).** Primitives are the raw palette; **semantic role tokens**
+map a *job* to a primitive. Components consume **roles**, never primitives or
+raw hex — so restyling is a one-line edit to a role, and a global change can't
+fail to reach the (view-encapsulated) custom components. Both layers are
+single-sourced: primitives in `styles/_theme_sass_variable_overrides.scss`,
+roles + exposure in `styles/_theme_css_variable_overrides.scss`.
 
-| Token | Hex | Role |
+### Primitives (the raw palette — don't consume directly in components)
+
+| Token | Hex | Notes |
 |---|---|---|
-| `--bhbta-maroon` | `#4E2222` | Primary: body text, titles, links, header/footer/breadcrumb bands |
-| `--bhbta-maroon-dark` | `#3A1A1A` | Pressed / hover-bg states |
-| `--bhbta-maroon-hover` | `#944444` | Lighter tint for some hovers |
-| `--bhbta-cream` | `#FFFDF4` | Page background, text-on-maroon |
-| `--bhbta-sand` | `#E3D2C8` | Secondary accent (breadcrumb text on maroon, badges, h2-on-dark) |
-| `--bhbta-copper` | `#B1713C` | Tertiary accent: uppercase kicker labels, link hover, hover rules |
+| `--bhbta-maroon` | `#4E2222` | Warm brand hue |
+| `--bhbta-maroon-dark` / `--bhbta-maroon-hover` | `#3A1A1A` / `#944444` | Brand pressed / hover tints |
+| `--bhbta-copper` | `#B1713C` | Warm accent |
+| `--bhbta-sand` | `#E3D2C8` | Soft warm accent (= ramp `n200`) |
+| `--bhbta-cool` / `--bhbta-cool-dark` | `#2C6E8F` / `#1F5266` | Cool accent — link underlines; relieves the analogous-warm monotone |
+| `--bhbta-ink` | `#1A1A1A` | Near-black |
+| `--bhbta-n50…n700` | `#FFFDF4 … #2B2622` | **Warm-neutral ramp** (cream→ink): surfaces, borders, muted text |
 
-Body text is the **warm `#4E2222`**, not near-black — adopted from the parent
-site, warms the whole page.
+### Semantic roles (consume THESE)
+
+| Role | Resolves to | Job |
+|---|---|---|
+| `--bhbta-text` | ink | Body + running + **link text** (links are near-black, not colored) |
+| `--bhbta-text-muted` / `--bhbta-text-faint` | n500 / n400 | Secondary / faint text (warm-neutral) |
+| `--bhbta-heading` | maroon | Display headings/titles (h1, section titles, SECTIONS) |
+| `--bhbta-link-underline` | **cool** | Link underline at rest (steel-blue) |
+| `--bhbta-link-hover` | copper | Link text + underline on hover (warm pop) |
+| `--bhbta-accent` / `--bhbta-accent-soft` | copper / sand | Kicker labels, accent rules / badges, breadcrumb text |
+| `--bhbta-brand` / `--bhbta-brand-hover` | maroon / maroon-hover | Masthead wordmark + nav + search chrome |
+| `--bhbta-band-bg` / `--bhbta-on-brand` | maroon / cream | Maroon band backgrounds / text on them |
+| `--bhbta-stat` | maroon | Numeric accents (section counts) |
+| `--bhbta-border` / `--bhbta-border-subtle` / `--bhbta-border-strong` | n300 / n200 / n400 | Hairlines, dividers, input borders (off maroon-tint) |
+| `--bhbta-surface` | cream | Page background |
+
+**The color model (s112, research-grounded — see session log):** the reading
+surface is calm-neutral (cream + near-black body + a warm-neutral ramp for
+borders/dividers/muted text); the **warm brand (maroon)** is reserved for
+identity — display headings, the masthead, and bands — *not* running text and
+*not* link text; **links are near-black text with a cool steel-blue underline**
+(copper on hover). This breaks the analogous-warm monotone by (a) moving
+surfaces/borders/secondary-text onto the neutral ramp and (b) introducing one
+cool counter-color. Validated against The National Archives UK, GOV.UK, and
+NYPL (neutral reading surface + sparse brand accent + blue underlined links).
+The steel-blue `#2C6E8F` clears WCAG AA on cream (5.5:1) and 3:1 vs the body
+text. Earlier warm-maroon-body + maroon-link-text was reverted — it read wrong
+on text-dense pages.
 
 ---
 
@@ -62,8 +94,8 @@ from `<h1>…<h6>`.
 | Page title (`h1`) | Marcellus 400 | ~2.4rem | mixed case (preserves Sanskrit/IAST), slight tracking | maroon |
 | Section title (browse) | Marcellus 400 | ~1.7rem | mixed case | maroon |
 | Kicker label (copper uppercase) — subsection labels, "Filters", "On this page", "Browse"-tabs label | Marcellus 400 | ~0.95rem | UPPERCASE, tracking ~0.16em | copper |
-| Body | Montserrat 400 | 1rem (16px) | normal | `#4E2222` |
-| Result/item title | Marcellus **400** (not 300) | ~1.18rem | mixed case | maroon |
+| Body | Montserrat 400 | 1rem (16px) | normal | `#1A1A1A` (ink) |
+| Result/item title (a link) | Marcellus **400** (not 300) | ~1.18rem | mixed case | ink text, steel-blue underline |
 | Facet name, tabs, counts, nav | Montserrat | ~0.9–1rem | per context | maroon |
 | Small / meta | Montserrat 400 | ~0.85rem | normal | muted |
 
@@ -88,12 +120,12 @@ scale with font size):
 a {
   color: currentColor;                      /* link text = body color */
   text-decoration-line: underline;
-  text-decoration-color: var(--bhbta-maroon);
+  text-decoration-color: var(--bhbta-link-underline);  /* steel-blue (s112) */
   text-decoration-thickness: 0.3ex;
   text-underline-offset: 0.3ex;
   /* text-decoration-skip-ink: auto is the default — keep it */
 }
-a:hover { text-decoration-color: var(--bhbta-copper); color: var(--bhbta-copper); }
+a:hover { text-decoration-color: var(--bhbta-link-hover); color: var(--bhbta-link-hover); }
 a:focus-visible { /* visible focus ring, ≥3:1 contrast — see §5 */ }
 ```
 

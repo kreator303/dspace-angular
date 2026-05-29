@@ -39,14 +39,39 @@ $bhbta-maroon-hover: #944444;   // lighter tint for link/icon hover
 $bhbta-cream:        #FFFDF4;   // page background (matches parent)
 $bhbta-cream-warm:   #E3D2C8;   // "sand" accent (parent h2 color)
 $bhbta-copper:       #B1713C;   // copper accent (parent h3 / kicker labels)
+$bhbta-ink:          #1A1A1A;   // near-black running/body text (s112 — maroon body text reverted; maroon reserved for links + display headings)
+$bhbta-ink-muted:    #484848;   // (legacy neutral; superseded by warm-neutral ramp below)
+$bhbta-ink-faint:    #6E6E6E;   // (legacy neutral; superseded by warm-neutral ramp below)
+
+// Cool accent / link underline (s112) — tuned steel-blue. Relieves the
+// analogous-warm monotone (maroon/copper/sand are all red→orange); WCAG-AA on
+// cream (5.5:1) AND clears 3:1 vs near-black body text, so links survive even
+// without an underline. Validated against real institutional link blues
+// (TNA #005FA3, GOV.UK #1D70B8, NYPL #0069BF, parent #006AA4).
+$bhbta-cool:         #2C6E8F;
+$bhbta-cool-dark:    #1F5266;   // darker steel for cool-accent hover/pressed
+
+// Warm-neutral ramp (cream → ink), tinted toward the palette so dividers,
+// borders, and muted text read warm rather than cold grey. This is the piece
+// that lets surfaces/borders/secondary-text come OFF maroon-tints (the research
+// finding: maroon was doing surface/border/secondary-text jobs it shouldn't).
+$bhbta-n50:          #FFFDF4;   // = surface/cream
+$bhbta-n100:         #F2ECE2;   // raised surface
+$bhbta-n200:         #E3D8C9;   // subtle divider / sand
+$bhbta-n300:         #C9BBAA;   // standard hairline border
+$bhbta-n400:         #9E9183;   // strong border / faint text
+$bhbta-n500:         #6E635A;   // muted text (AA on cream)
+$bhbta-n600:         #4A423C;   // secondary text
+$bhbta-n700:         #2B2622;   // near-ink
 
 // Display serif + body sans, matching the parent org site.
 $bhbta-font-display: "Marcellus", Georgia, "Times New Roman", serif;
 $bhbta-font-body:    "Montserrat", -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-$primary:   $bhbta-maroon;
-$link-color: $bhbta-maroon;
+$primary:    $bhbta-maroon;
+$link-color: $bhbta-ink;      // link TEXT near-black; the maroon is the underline only (Gerry s112)
 $body-bg:    $bhbta-cream;
+$body-color: $bhbta-ink;      // running/body text near-black, not maroon (Gerry s112)
 
 // Add new semantic colors here (you don't need to add existing semantic colors)
 @import '../../../styles/_variables.scss';

@@ -13,8 +13,44 @@
   --bhbta-cream:         #{$bhbta-cream};
   --bhbta-sand:          #{$bhbta-cream-warm};
   --bhbta-copper:        #{$bhbta-copper};
+  --bhbta-ink:           #{$bhbta-ink};
+  --bhbta-ink-muted:     #{$bhbta-ink-muted};
+  --bhbta-ink-faint:     #{$bhbta-ink-faint};
+  --bhbta-cool:          #{$bhbta-cool};
+  --bhbta-cool-dark:     #{$bhbta-cool-dark};
+  --bhbta-n50:           #{$bhbta-n50};
+  --bhbta-n100:          #{$bhbta-n100};
+  --bhbta-n200:          #{$bhbta-n200};
+  --bhbta-n300:          #{$bhbta-n300};
+  --bhbta-n400:          #{$bhbta-n400};
+  --bhbta-n500:          #{$bhbta-n500};
+  --bhbta-n600:          #{$bhbta-n600};
+  --bhbta-n700:          #{$bhbta-n700};
   --bhbta-font-display:  #{$bhbta-font-display};
   --bhbta-font-body:     #{$bhbta-font-body};
+
+  // === Semantic role tokens (s112) — components consume THESE by ROLE, not the
+  // raw color primitives above. Each role currently resolves to today's color
+  // (this layer is behavior-preserving). To restyle, edit a role here ONCE and
+  // every component that plays that role follows. This is the fix for the
+  // "changed the global, but the 6 custom components didn't follow" drift.
+  --bhbta-text:           var(--bhbta-ink);        // body + running + content-link text
+  --bhbta-text-muted:     var(--bhbta-n500);       // secondary / meta text (warm-neutral, AA on cream)
+  --bhbta-text-faint:     var(--bhbta-n400);       // empty / loading / placeholder
+  --bhbta-heading:        var(--bhbta-maroon);     // display headings / titles (h1, section titles, SECTIONS)
+  --bhbta-link-underline: var(--bhbta-cool);       // link underline at rest (steel-blue — s112; was maroon)
+  --bhbta-link-hover:     var(--bhbta-copper);     // link text + underline on hover (warm copper pop)
+  --bhbta-border-subtle:  var(--bhbta-n200);       // faint dividers
+  --bhbta-border:         var(--bhbta-n300);       // standard hairline borders
+  --bhbta-border-strong:  var(--bhbta-n400);       // emphasis / input borders
+  --bhbta-accent:         var(--bhbta-copper);     // uppercase kicker labels, accent rules
+  --bhbta-accent-soft:    var(--bhbta-sand);       // secondary accent (badges, breadcrumb text)
+  --bhbta-brand:          var(--bhbta-maroon);     // masthead wordmark + nav + search chrome (the "is-it-maroon?" surface)
+  --bhbta-brand-hover:    var(--bhbta-maroon-hover); // hover micro-state for brand chrome
+  --bhbta-stat:           var(--bhbta-maroon);     // numeric accents (section counts)
+  --bhbta-surface:        var(--bhbta-cream);      // page background
+  --bhbta-band-bg:        var(--bhbta-maroon);     // maroon band backgrounds (footer, breadcrumb, header strip)
+  --bhbta-on-brand:       var(--bhbta-cream);      // text on maroon bands / dark backdrop
 
   // Header (top bar with logo + search + login)
   --ds-header-bg:                    #{$bhbta-cream};
@@ -45,9 +81,11 @@
   --ds-breadcrumb-link-color:        #{$bhbta-cream-warm};
   --ds-breadcrumb-link-active-color: #{$bhbta-cream};
 
-  // Bootstrap link color CSS var (used by Angular templates that bind to it)
-  --bs-link-color:                   #{$bhbta-maroon};
-  --bs-link-hover-color:             #{$bhbta-maroon-hover};
+  // Bootstrap link color CSS var (used by Angular templates that bind to it).
+  // Link TEXT is near-black ink; the maroon shows only as the underline
+  // (text-decoration-color, set per-surface in _global-styles.scss). Hover → copper.
+  --bs-link-color:                   #{$bhbta-ink};
+  --bs-link-hover-color:             #{$bhbta-copper};
   --bs-primary:                      #{$bhbta-maroon};
   --bs-primary-rgb:                  78, 34, 34;
 
