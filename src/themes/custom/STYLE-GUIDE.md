@@ -106,26 +106,37 @@ generous paragraph spacing. Never let transcript body run full-viewport-width.
 
 ---
 
-## 4. Links — underlined everywhere (decided 2026-05-28)
+## 4. Links — underline on hover only (revised s112; was underline-at-rest)
 
-**Decision:** in-prose links AND list links are **underlined at rest**, for
-visual consistency and maximum accessibility (no reliance on the contextual
-"list links may drop the underline" exemption). Trial choice — revisit if dense
-100+-link lists feel noisy.
+**Decision (s112):** content/list link text is near-black ink with **no underline
+at rest**; the underline (steel-blue, → copper on hover) appears on hover/focus.
+Superseded the 2026-05-28 underline-everywhere trial — the at-rest underlines read
+as noise on the dense 100+-link browse index. Matches the home section-list
+pattern (ink text, hover affordance).
 
-**CSS recipe** (Andy Bell, Piccalilli 2023, L3-verbatim; relative `ex` units
-scale with font size):
+**Known tradeoff (flag, not resolved):** an in-prose link inside body text
+(`ds-comcol-page-content a`) now has neither color nor a rest-underline, so it is
+not visually distinguishable from surrounding text until hover — a WCAG 1.4.1
+(use-of-color) concern for *in-prose* links specifically. List/title links are
+contextually obvious (whole-row / heading links). If in-prose distinction is
+wanted, the cheapest fix is to color in-prose link text steel (it clears 3:1 vs
+body text) or keep a rest-underline for `ds-comcol-page-content a` only.
+
+**CSS recipe** (steel underline on hover; relative `ex` units scale with font size):
 
 ```css
 a {
-  color: currentColor;                      /* link text = body color */
-  text-decoration-line: underline;
+  color: currentColor;                      /* link text = body color (ink) */
+  text-decoration-line: none;               /* no underline at rest */
   text-decoration-color: var(--bhbta-link-underline);  /* steel-blue (s112) */
   text-decoration-thickness: 0.3ex;
   text-underline-offset: 0.3ex;
-  /* text-decoration-skip-ink: auto is the default — keep it */
 }
-a:hover { text-decoration-color: var(--bhbta-link-hover); color: var(--bhbta-link-hover); }
+a:hover {
+  text-decoration-line: underline;          /* underline appears on hover */
+  text-decoration-color: var(--bhbta-link-hover);
+  color: var(--bhbta-link-hover);
+}
 a:focus-visible { /* visible focus ring, ≥3:1 contrast — see §5 */ }
 ```
 

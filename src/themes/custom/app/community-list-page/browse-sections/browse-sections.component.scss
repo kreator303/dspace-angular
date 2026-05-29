@@ -30,7 +30,7 @@
   margin-left: -2px;
   border-left: 2px solid transparent;
   color: var(--bhbta-text); // link text near-black; maroon is the underline (s112)
-  text-decoration-line: underline;
+  text-decoration-line: none; // underline appears on hover only (s112)
   text-decoration-color: var(--bhbta-link-underline);
   text-decoration-thickness: 0.3ex;
   text-underline-offset: 0.3ex;
@@ -40,6 +40,7 @@
 .bhbta-browse__toc li a:hover {
   border-left-color: var(--bhbta-link-hover);
   color: var(--bhbta-link-hover);
+  text-decoration-line: underline;
   text-decoration-color: var(--bhbta-link-hover);
 }
 
@@ -100,7 +101,7 @@
   display: block;
   padding: 0.28rem 0 0.28rem 1rem;
   color: var(--bhbta-text); // link text near-black; maroon is the underline (s112)
-  text-decoration-line: underline;
+  text-decoration-line: none; // underline appears on hover only (s112)
   text-decoration-color: var(--bhbta-link-underline);
   text-decoration-thickness: 0.3ex;
   text-underline-offset: 0.3ex;
@@ -109,6 +110,7 @@
 }
 .bhbta-browse__collections li a:hover {
   color: var(--bhbta-link-hover);
+  text-decoration-line: underline;
   text-decoration-color: var(--bhbta-link-hover);
 }
 

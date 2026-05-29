@@ -199,7 +199,7 @@ ds-item-search-result-list-element a.lead {
    content links everywhere for consistency. See STYLE-GUIDE.md §4. */
 ds-item-search-result-list-element a.lead,
 ds-comcol-page-content a {
-  text-decoration-line: underline;
+  text-decoration-line: none; // underline appears on hover only (s112)
   text-decoration-color: var(--bhbta-link-underline);
   text-decoration-thickness: 0.3ex;
   text-underline-offset: 0.3ex;
@@ -207,6 +207,7 @@ ds-comcol-page-content a {
 ds-item-search-result-list-element a.lead:hover,
 ds-comcol-page-content a:hover {
   color: var(--bhbta-link-hover);
+  text-decoration-line: underline;
   text-decoration-color: var(--bhbta-link-hover);
 }
 
