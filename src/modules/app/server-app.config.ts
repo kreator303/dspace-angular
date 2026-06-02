@@ -20,6 +20,7 @@ import {
   StoreModule,
 } from '@ngrx/store';
 import {
+  provideMissingTranslationHandler,
   provideTranslateService,
   TranslateLoader,
 } from '@ngx-translate/core';
@@ -57,6 +58,7 @@ import { OrejimeService } from '../../app/shared/cookies/orejime.service';
 import { ServerOrejimeService } from '../../app/shared/cookies/server-orejime.service';
 import { AngularticsProviderMock } from '../../app/shared/mocks/angulartics-provider.service.mock';
 import { Angulartics2Mock } from '../../app/shared/mocks/angulartics2.service.mock';
+import { MissingTranslationHelper } from '../../app/shared/translate/missing-translation.helper';
 import { Angulartics2DSpace } from '../../app/statistics/angulartics/dspace-provider';
 import { MockMatomoTracker } from '../../app/statistics/mock-matomo-tracker';
 import { ServerSubmissionService } from '../../app/submission/server-submission.service';
@@ -83,6 +85,7 @@ export const serverAppConfig: ApplicationConfig = mergeApplicationConfig({
         useFactory: createTranslateLoader,
         deps: [TransferState],
       },
+      missingTranslationHandler: provideMissingTranslationHandler(MissingTranslationHelper),
     }),
     ...ServerInitService.providers(),
     { provide: APP_ID, useValue: 'dspace-angular' },
