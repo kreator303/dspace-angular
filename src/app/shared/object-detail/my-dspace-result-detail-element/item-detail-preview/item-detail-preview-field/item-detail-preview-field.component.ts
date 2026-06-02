@@ -1,14 +1,16 @@
-
 import {
   Component,
   Input,
 } from '@angular/core';
+import { Item } from '@dspace/core/shared/item.model';
+import { Metadata } from '@dspace/core/shared/metadata.utils';
+import { SearchResult } from '@dspace/core/shared/search/models/search-result.model';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { Item } from '../../../../../core/shared/item.model';
-import { Metadata } from '../../../../../core/shared/metadata.utils';
+import { MetadataValue } from '../../../../../core/shared/metadata.models';
+import { MetadataDirective } from '../../../../metadata.directive';
 import { MetadataFieldWrapperComponent } from '../../../../metadata-field-wrapper/metadata-field-wrapper.component';
-import { SearchResult } from '../../../../search/models/search-result.model';
+import { allMetadataWithHitHighlights } from '../../../../utils/highlighted-metadata.util';
 
 /**
  * This component show values for the given item metadata
@@ -17,6 +19,7 @@ import { SearchResult } from '../../../../search/models/search-result.model';
   selector: 'ds-base-item-detail-preview-field',
   templateUrl: './item-detail-preview-field.component.html',
   imports: [
+    MetadataDirective,
     MetadataFieldWrapperComponent,
     TranslateModule,
   ],
@@ -57,6 +60,17 @@ export class ItemDetailPreviewFieldComponent {
    * The value's separator
    */
   @Input() separator: string;
+
+
+  /**
+   * Gets all matching metadata values from hitHighlights or dso metadata.
+   *
+   * @param {string|string[]} keyOrKeys The metadata key(s) in scope. Wildcards are supported; see [[Metadata]].
+   * @returns {MetadataValue[]} the matching values or an empty array.
+   */
+  allMetadata(keyOrKeys: string | string[]): MetadataValue[] {
+    return allMetadataWithHitHighlights(this.item.metadata, this.object.hitHighlights, keyOrKeys);
+  }
 
   /**
    * Gets all matching metadata string values from hitHighlights or dso metadata, preferring hitHighlights.

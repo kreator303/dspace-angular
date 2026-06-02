@@ -14,9 +14,8 @@
  * from your application's main.server.ts file, as seen below with the
  * import for `ngExpressEngine`.
  */
-
-import 'zone.js/node';
 import 'reflect-metadata';
+import 'zone.js/node';
 
 /* eslint-disable import/no-namespace */
 import * as morgan from 'morgan';
@@ -39,24 +38,26 @@ import { enableProdMode } from '@angular/core';
 
 import { environment } from './src/environments/environment';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { hasValue } from './src/app/shared/empty.util';
+import { hasValue } from '@dspace/shared/utils/empty.util';
 import { UIServerConfig } from './src/config/ui-server-config.interface';
 import bootstrap from './src/main.server';
 import { buildAppConfig } from './src/config/config.server';
 import {
   APP_CONFIG,
   AppConfig,
+  toClientConfig,
 } from './src/config/app-config.interface';
 import { extendEnvironmentWithAppConfig } from './src/config/config.util';
+import { ServerHashedFileMapping } from './src/modules/dynamic-hash/hashed-file-mapping.server';
 import { logStartupMessage } from './startup-message';
-import { TOKENITEM } from './src/app/core/auth/models/auth-token-info.model';
+import { TOKENITEM } from '@dspace/core/auth/models/auth-token-info.model';
 import { CommonEngine } from '@angular/ssr/node';
 import { APP_BASE_HREF } from '@angular/common';
 import {
   REQUEST,
   RESPONSE,
 } from './src/express.tokens';
-import { SsrExcludePatterns } from "./src/config/ssr-config.interface";
+import { SsrExcludePatterns } from './src/config/ssr-config.interface';
 
 /*
  * Set path for the browser application's dist folder
@@ -69,7 +70,11 @@ const indexHtml = join(DIST_FOLDER, 'index.html');
 
 const cookieParser = require('cookie-parser');
 
-const appConfig: AppConfig = buildAppConfig(join(DIST_FOLDER, 'assets/config.json'));
+const configJson = join(DIST_FOLDER, 'assets/config.json');
+const hashedFileMapping = new ServerHashedFileMapping(DIST_FOLDER, 'index.html');
+const appConfig: AppConfig = buildAppConfig(configJson, hashedFileMapping);
+appConfig.themes.forEach(themeConfig => hashedFileMapping.addThemeStyle(themeConfig.name, themeConfig.prefetch));
+hashedFileMapping.save();
 
 // cache of SSR pages for known bots, only enabled in production mode
 let botCache: LRUCache<string, any>;
@@ -145,7 +150,7 @@ export function app() {
   server.get('/robots.txt', (req, res) => {
     res.setHeader('content-type', 'text/plain');
     res.render('assets/robots.txt.ejs', {
-      'origin': req.protocol + '://' + req.headers.host,
+      'origin': environment.ui.baseUrl,
     });
   });
 
@@ -177,10 +182,14 @@ export function app() {
    * When it is present, the rateLimiter will be enabled. When it is undefined, the rateLimiter will be disabled.
    */
   if (hasValue((environment.ui as UIServerConfig).rateLimiter)) {
-    const RateLimit = require('express-rate-limit');
-    const limiter = new RateLimit({
+    const { rateLimit } = require('express-rate-limit')
+    const limiter = rateLimit({
       windowMs: (environment.ui as UIServerConfig).rateLimiter.windowMs,
-      max: (environment.ui as UIServerConfig).rateLimiter.max,
+      limit: (environment.ui as UIServerConfig).rateLimiter.limit,
+      standardHeaders: true,
+      legacyHeaders: false,
+      // don't log ERR_ERL_PERMISSIVE_TRUST_PROXY if we are trusting proxies
+      validate: {trustProxy: !environment.ui.useProxies},
     });
     server.use(limiter);
   }
@@ -241,7 +250,11 @@ function ngApp(req, res, next) {
  */
 function serverSideRender(req, res, next, sendToUser: boolean = true) {
   const { protocol, originalUrl, baseUrl, headers } = req;
-  const commonEngine = new CommonEngine({ enablePerformanceProfiler: environment.ssr.enablePerformanceProfiler });
+  // "allowedHosts" specifies which hosts are allowed to be rendered via SSR.
+  // By default, this is set to the host of the UI's baseUrl.
+  const commonEngine = new CommonEngine({ enablePerformanceProfiler: environment.ssr.enablePerformanceProfiler,
+                                          allowedHosts: [ new URL(environment.ui.baseUrl).hostname ],
+                                        });
   // Render the page via SSR (server side rendering)
   commonEngine
     .render({
@@ -262,7 +275,7 @@ function serverSideRender(req, res, next, sendToUser: boolean = true) {
         },
         {
           provide: APP_CONFIG,
-          useValue: environment,
+          useValue: toClientConfig(environment as AppConfig),
         },
       ],
     })
@@ -325,7 +338,7 @@ function clientSideRender(req, res) {
     html = html.replace(new RegExp(REST_BASE_URL, 'g'), environment.rest.baseUrl);
   }
 
-  res.send(html);
+  res.set('Cache-Control', 'no-cache, no-store').send(html);
 }
 
 
@@ -336,7 +349,11 @@ function clientSideRender(req, res) {
  */
 function addCacheControl(req, res, next) {
   // instruct browser to revalidate
-  res.header('Cache-Control', environment.cache.control || 'max-age=604800');
+  if (environment.cache.noCacheFiles.includes(req.originalUrl)) {
+    res.header('Cache-Control', 'no-cache, no-store');
+  } else {
+    res.header('Cache-Control', environment.cache.control || 'max-age=604800');
+  }
   next();
 }
 
@@ -665,10 +682,12 @@ function healthCheck(req, res) {
   const baseUrl = `${REST_BASE_URL}${environment.actuators.endpointPath}`;
   fetch(baseUrl)
     .then((response) => {
-      res.status(response.status).send(response);
+      return response.json().then((data) => {
+        res.status(response.status).send(data);
+      });
     })
     .catch((error) => {
-      res.status(error.response.status).send({
+      res.status(error?.response?.status || 503).send({
         error: error.message,
       });
     });

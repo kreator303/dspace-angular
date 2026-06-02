@@ -18,6 +18,13 @@ import {
   NavigationStart,
   Router,
 } from '@angular/router';
+import { AuthService } from '@dspace/core/auth/auth.service';
+import { isAuthenticationBlocking } from '@dspace/core/auth/selectors';
+import {
+  NativeWindowRef,
+  NativeWindowService,
+} from '@dspace/core/services/window.service';
+import { distinctNext } from '@dspace/core/shared/distinct-next';
 import {
   NgbModal,
   NgbModalConfig,
@@ -39,19 +46,14 @@ import {
 } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
-import { AuthService } from './core/auth/auth.service';
-import { isAuthenticationBlocking } from './core/auth/selectors';
-import {
-  NativeWindowRef,
-  NativeWindowService,
-} from './core/services/window.service';
-import { distinctNext } from './core/shared/distinct-next';
 import { ThemedRootComponent } from './root/themed-root.component';
 import { HostWindowResizeAction } from './shared/host-window.actions';
 import { IdleModalComponent } from './shared/idle-modal/idle-modal.component';
 import { CSSVariableService } from './shared/sass-helper/css-variable.service';
 import { HostWindowState } from './shared/search/host-window.reducer';
 import { ThemeService } from './shared/theme-support/theme.service';
+import { SocialComponent } from './social/social.component';
+import { SocialService } from './social/social.service';
 
 @Component({
   selector: 'ds-app',
@@ -60,6 +62,7 @@ import { ThemeService } from './shared/theme-support/theme.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
+    SocialComponent,
     ThemedRootComponent,
   ],
 })
@@ -87,6 +90,11 @@ export class AppComponent implements OnInit, AfterViewInit {
    */
   idleModalOpen: boolean;
 
+  /**
+   * In order to show sharing component only in csr
+   */
+  browserPlatform = false;
+
   constructor(
     @Inject(NativeWindowService) private _window: NativeWindowRef,
     @Inject(DOCUMENT) private document: any,
@@ -99,16 +107,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     private cssService: CSSVariableService,
     private modalService: NgbModal,
     private modalConfig: NgbModalConfig,
+    private socialService: SocialService,
   ) {
     this.notificationOptions = environment.notifications;
+    this.browserPlatform = isPlatformBrowser(this.platformId);
 
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.browserPlatform) {
       this.trackIdleModal();
     }
 
     this.isThemeLoading$ = this.themeService.isThemeLoading$;
 
     this.storeCSSVariables();
+
+    this.socialService.initialize();
   }
 
   ngOnInit() {
