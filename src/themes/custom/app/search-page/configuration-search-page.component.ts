@@ -23,8 +23,8 @@ import { ViewModeSwitchComponent } from '../../../../app/shared/view-mode-switch
   selector: 'ds-themed-configuration-search-page',
   // styleUrls: ['./configuration-search-page.component.scss'],
   styleUrls: ['../../../../app/shared/search/search.component.scss'],
-  // WL s120 (#192): theme-local template adds the recent-items context paragraph.
-  templateUrl: './search.component.html',
+  // templateUrl: './configuration-search-page.component.html'
+  templateUrl: '../../../../app/shared/search/search.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [pushInOut],
   providers: [

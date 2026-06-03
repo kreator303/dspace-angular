@@ -211,21 +211,6 @@ ds-comcol-page-content a:hover {
   text-decoration-color: var(--bhbta-link-hover);
 }
 
-/* In-prose links inside the New-page context paragraph get a maroon REST-underline
-   — the s119 STYLE-GUIDE.md §4 fix for in-prose links: distinguishable without hover
-   (clears WCAG 1.4.1), distinct from Browse (underlines suppressed) and content links
-   (hover-only). s120 #192. */
-.bhbta-search-context a {
-  text-decoration-line: underline;
-  text-decoration-color: var(--bhbta-link-underline);
-  text-decoration-thickness: 0.3ex;
-  text-underline-offset: 0.3ex;
-}
-.bhbta-search-context a:hover {
-  color: var(--bhbta-link-hover);
-  text-decoration-color: var(--bhbta-link-hover);
-}
-
 /* Stock Bootstrap "info" badges (Item type, etc.) were bright blue — re-tint
    to a sand pill with maroon text so they sit in the palette. */
 .badge.bg-info {
