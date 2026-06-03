@@ -90,6 +90,6 @@
   // === 'New' entry-gate page (#192): the 'recent' discovery configuration ===
   // DSpace derives these keys from the configuration name ({configuration}.search.*).
   // PLACEHOLDER copy — refine alongside the context paragraph.
-  "recent.search.title": "Recently Added",
-  "recent.search.results.head": "Recently Added",
+  "recent.search.title": "New Items",
+  "recent.search.results.head": "New Items",
 }
