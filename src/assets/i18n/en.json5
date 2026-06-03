@@ -1422,8 +1422,6 @@
 
   "collection.form.correctionSubmissionDefinition": "Submission definition for correction request",
 
-
-
   "collection.listelement.badge": "Collection",
 
   "collection.logo": "Collection logo",
@@ -3155,7 +3153,6 @@
   "item.page.relationships.RELATION.Project.fundings": "Fundings",
 
   "item.page.relationships.RELATION.Project.researchoutputs": "Publications",
-
 
   "item.page.subject": "Keywords",
 
@@ -7890,4 +7887,8 @@
   "bitstream.related.isReplacedBy": "Is replaced by",
 
   "bitstream.related.deleted": "deleted",
+
+  "recent.search.title": "New Items",
+
+  "recent.search.results.head": "New Items",
 }
