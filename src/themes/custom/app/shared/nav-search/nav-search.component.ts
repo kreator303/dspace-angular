@@ -11,9 +11,10 @@ import { Router } from '@angular/router';
 
 /**
  * Nav-bar search affordance: collapsed = bare "SEARCH" word styled to match
- * the other Marcellus nav items. Click expands an input field to the right with
- * a maroon submit button (icon on its right edge). Click-outside or scroll
- * collapses; pressing Enter or clicking the maroon button submits to /search.
+ * the other Marcellus nav items. Click TOGGLES an input field to the right with
+ * a maroon submit button (icon on its right edge) — click the word again to
+ * close it. Click-outside or scroll also collapses; Enter or the maroon button
+ * submits to /search. Disclosure pattern: the trigger carries aria-expanded.
  */
 @Component({
   selector: 'bhbta-nav-search',
@@ -31,8 +32,11 @@ export class BhbtaNavSearchComponent {
 
   constructor(private router: Router, private host: ElementRef<HTMLElement>) {}
 
-  open() {
-    if (this.expanded()) return;
+  toggle() {
+    if (this.expanded()) {
+      this.close();
+      return;
+    }
     this.expanded.set(true);
     // Defer focus until the input is in the DOM
     setTimeout(() => this.inputRef?.nativeElement?.focus(), 50);

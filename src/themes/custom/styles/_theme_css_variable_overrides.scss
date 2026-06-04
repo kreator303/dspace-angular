@@ -1,7 +1,10 @@
-// === Baba Hari Dass Teachings Archive — CSS custom property overrides (s110) ===
-// These drive the visible chrome of DSpace 9: navbar, header, footer, home-news,
-// link colors. The SASS variable file controls Bootstrap-level vars (e.g. $primary);
-// this file controls the DSpace-specific surfaces.
+// === Baba Hari Dass Teachings Archive — CSS custom property overrides ===
+// The SASS variable file controls Bootstrap-level vars (e.g. $primary); this file
+// exposes the brand palette as --bhbta-* tokens and overrides the --ds-* surfaces
+// that are STILL STOCK (breadcrumb, header-navbar-wrapper border, bootstrap link
+// vars). Navbar / header / footer / home are custom components now
+// (src/themes/custom/app/), so they style themselves via --bhbta-* — the old
+// --ds-navbar/header/footer/home-news overrides were removed s121 as dead.
 
 :root {
   // === BHBTA brand tokens (single source = _theme_sass_variable_overrides.scss) ===
@@ -14,8 +17,6 @@
   --bhbta-sand:          #{$bhbta-cream-warm};
   --bhbta-copper:        #{$bhbta-copper};
   --bhbta-ink:           #{$bhbta-ink};
-  --bhbta-ink-muted:     #{$bhbta-ink-muted};
-  --bhbta-ink-faint:     #{$bhbta-ink-faint};
   --bhbta-cool:          #{$bhbta-cool};
   --bhbta-cool-dark:     #{$bhbta-cool-dark};
   --bhbta-n50:           #{$bhbta-n50};
@@ -34,11 +35,11 @@
   // (this layer is behavior-preserving). To restyle, edit a role here ONCE and
   // every component that plays that role follows. This is the fix for the
   // "changed the global, but the 6 custom components didn't follow" drift.
-  --bhbta-text:           var(--bhbta-ink);        // body + running + content-link text
+  --bhbta-text:           var(--bhbta-ink);        // body + running text (content-link text is steel — see link rule, s121)
   --bhbta-text-muted:     var(--bhbta-n500);       // secondary / meta text (warm-neutral, AA on cream)
   --bhbta-text-faint:     var(--bhbta-n400);       // empty / loading / placeholder
   --bhbta-heading:        var(--bhbta-maroon);     // display headings / titles (h1, section titles, SECTIONS)
-  --bhbta-link-underline: var(--bhbta-cool);       // link underline at rest (steel-blue — s112; was maroon)
+  --bhbta-link-underline: var(--bhbta-cool);       // steel-blue — content-link TEXT + underline at rest (s121; underline-only pre-s121)
   --bhbta-link-hover:     var(--bhbta-copper);     // link text + underline on hover (warm copper pop)
   --bhbta-border-subtle:  var(--bhbta-n200);       // faint dividers
   --bhbta-border:         var(--bhbta-n300);       // standard hairline borders
@@ -52,27 +53,12 @@
   --bhbta-band-bg:        var(--bhbta-maroon);     // maroon band backgrounds (footer, breadcrumb, header strip)
   --bhbta-on-brand:       var(--bhbta-cream);      // text on maroon bands / dark backdrop
 
-  // Header (top bar with logo + search + login)
-  --ds-header-bg:                    #{$bhbta-cream};
-  --ds-header-background-color:      #{$bhbta-cream};
-  --ds-header-icon-color:            #{$bhbta-maroon};
-  --ds-header-icon-color-hover:      #{$bhbta-maroon-hover};
-
-  // Navbar (the dark band beneath the header with Communities & Collections, etc.)
-  --ds-navbar-background-color:      #{$bhbta-maroon};
-  --ds-navbar-link-color:            #{$bhbta-cream};
-  --ds-navbar-link-color-hover:      #{$bhbta-cream-warm};
-  --ds-navbar-link-bg-color:         #{$bhbta-maroon};
-  --ds-navbar-link-bg-color-hover:   #{$bhbta-maroon-dark};
-
-  // Home news / banner surface
-  --ds-home-news-background-color:   #{$bhbta-maroon};
-  --ds-home-news-link-color:         #{$bhbta-cream};
-  --ds-home-news-link-hover-color:   #{$bhbta-cream-warm};
-
-  // Footer
-  --ds-footer-bg:                    #{$bhbta-maroon};
-  --ds-footer-color:                 #{$bhbta-cream};
+  // NOTE (s121): the stock --ds-header-*, --ds-navbar-*, --ds-home-news-* and
+  // --ds-footer-* overrides were removed here. Those surfaces are custom
+  // components now (src/themes/custom/app/{header,navbar,home-page,footer}) that
+  // style themselves via --bhbta-* tokens, so the --ds-* overrides were dead
+  // (the stock navbar is even display:none). Only the surfaces below are STILL
+  // STOCK and genuinely consume these vars.
 
   // Breadcrumb ribbon — maroon band with sand links (stock default was the
   // cool $gray-200, which clashed with the warm palette). Overriding the var
@@ -81,9 +67,10 @@
   --ds-breadcrumb-link-color:        #{$bhbta-cream-warm};
   --ds-breadcrumb-link-active-color: #{$bhbta-cream};
 
-  // Bootstrap link color CSS var (used by Angular templates that bind to it).
-  // Link TEXT is near-black ink; the maroon shows only as the underline
-  // (text-decoration-color, set per-surface in _global-styles.scss). Hover → copper.
+  // Bootstrap link color CSS var — the DEFAULT for links NOT covered by a scoped
+  // rule (facet values, misc chrome). Kept near-black ink on purpose so the
+  // filter sidebar / chrome stays neutral; CONTENT links are steel via scoped
+  // rules in _global-styles.scss (s121). Hover → copper.
   --bs-link-color:                   #{$bhbta-ink};
   --bs-link-hover-color:             #{$bhbta-copper};
   --bs-primary:                      #{$bhbta-maroon};

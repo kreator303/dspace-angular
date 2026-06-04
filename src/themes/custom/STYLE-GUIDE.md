@@ -56,10 +56,10 @@ roles + exposure in `styles/_theme_css_variable_overrides.scss`.
 
 | Role | Resolves to | Job |
 |---|---|---|
-| `--bhbta-text` | ink | Body + running + **link text** (links are near-black, not colored) |
+| `--bhbta-text` | ink | Body + running text (content-link text is steel — see §4) |
 | `--bhbta-text-muted` / `--bhbta-text-faint` | n500 / n400 | Secondary / faint text (warm-neutral) |
 | `--bhbta-heading` | maroon | Display headings/titles (h1, section titles, SECTIONS) |
-| `--bhbta-link-underline` | **cool** | Link underline at rest (steel-blue) |
+| `--bhbta-link-underline` | **cool** | Content-link text + underline at rest (steel-blue, s121) |
 | `--bhbta-link-hover` | copper | Link text + underline on hover (warm pop) |
 | `--bhbta-accent` / `--bhbta-accent-soft` | copper / sand | Kicker labels, accent rules / badges, breadcrumb text |
 | `--bhbta-brand` / `--bhbta-brand-hover` | maroon / maroon-hover | Masthead wordmark + nav + search chrome |
@@ -71,9 +71,9 @@ roles + exposure in `styles/_theme_css_variable_overrides.scss`.
 **The color model (s112, research-grounded — see session log):** the reading
 surface is calm-neutral (cream + near-black body + a warm-neutral ramp for
 borders/dividers/muted text); the **warm brand (maroon)** is reserved for
-identity — display headings, the masthead, and bands — *not* running text and
-*not* link text; **links are near-black text with a cool steel-blue underline**
-(copper on hover). This breaks the analogous-warm monotone by (a) moving
+identity — display headings, the masthead, and bands — *not* running text.
+**Content links are steel-blue text at rest** (copper text + underline on hover,
+s121; see §4). This breaks the analogous-warm monotone by (a) moving
 surfaces/borders/secondary-text onto the neutral ramp and (b) introducing one
 cool counter-color. Validated against The National Archives UK, GOV.UK, and
 NYPL (neutral reading surface + sparse brand accent + blue underlined links).
@@ -95,7 +95,7 @@ from `<h1>…<h6>`.
 | Section title (browse) | Marcellus 400 | ~1.7rem | mixed case | maroon |
 | Kicker label (copper uppercase) — subsection labels, "Filters", "On this page", "Browse"-tabs label | Marcellus 400 | ~0.95rem | UPPERCASE, tracking ~0.16em | copper |
 | Body | Montserrat 400 | 1rem (16px) | normal | `#1A1A1A` (ink) |
-| Result/item title (a link) | Marcellus **400** (not 300) | ~1.18rem | mixed case | ink text, steel-blue underline |
+| Result/item title (a link) | Marcellus **400** (not 300) | ~1.18rem | mixed case | steel-blue text (copper on hover) |
 | Facet name, tabs, counts, nav | Montserrat | ~0.9–1rem | per context | maroon |
 | Small / meta | Montserrat 400 | ~0.85rem | normal | muted |
 
@@ -106,47 +106,63 @@ generous paragraph spacing. Never let transcript body run full-viewport-width.
 
 ---
 
-## 4. Links — underline on hover only (revised s112; was underline-at-rest)
+## 4. Links — STEEL text at rest, copper on hover (revised s121; was s112 ink + hover-only-underline)
 
-**Decision (s112):** content/list link text is near-black ink with **no underline
-at rest**; the underline (steel-blue, → copper on hover) appears on hover/focus.
-Superseded the 2026-05-28 underline-everywhere trial — the at-rest underlines read
-as noise on the dense 100+-link browse index. Matches the home section-list
-pattern (ink text, hover affordance).
+**Decision (s121):** content links are **steel-blue text at rest**
+(`--bhbta-link-underline` = `#2C6E8F`), going **copper with an underline on
+hover/focus**. The underline stays hover-only, so ONE rule serves prose + browse
++ list titles without per-surface scoping. Steel is the at-rest "this is a link"
+cue: it clears 3:1 vs body text and, with the hover underline as the non-color
+affordance, satisfies WCAG G183 (1.4.1).
 
-**Known tradeoff (flag, not resolved):** an in-prose link inside body text
-(`ds-comcol-page-content a`) now has neither color nor a rest-underline, so it is
-not visually distinguishable from surrounding text until hover — a WCAG 1.4.1
-(use-of-color) concern for *in-prose* links specifically. List/title links are
-contextually obvious (whole-row / heading links). If in-prose distinction is
-wanted, the cheapest fix is to color in-prose link text steel (it clears 3:1 vs
-body text) or keep a rest-underline for `ds-comcol-page-content a` only.
+**Why it changed.** The **s112** rule (ink text + hover-only underline) left
+in-prose links with NO at-rest cue — neither color nor underline — a WCAG 1.4.1
+miss. The earlier 2026-05-28 "underline-everywhere" trial had the opposite
+problem: at-rest underlines were noise on the dense 100+-link browse index (and
+the shared `.lead` class coupled titles to browse rows, so you couldn't drop the
+browse underline without dropping it everywhere). Steel-at-rest resolves both — a
+cue without the noise, one unified rule.
 
-**CSS recipe** (steel underline on hover; relative `ex` units scale with font size):
+**What's steel (content links):** in-prose (`ds-comcol-page-content a`), search/
+browse result titles (`a.lead`), the metadata browse index
+(`ds-browse-entry-list-element`), the community-list tree leaf-links + TOC, and
+the home SECTIONS panel.
+
+**What's NOT steel — by role, on purpose:** primary nav + section/subsection
+headings (maroon/copper brand chrome); browse tabs (tab idiom — maroon text +
+active underline); facet controls + facet values (kept neutral ink via the
+Bootstrap `--bs-link-color` default, so the filter sidebar doesn't compete with
+results). Steel earns its meaning by signalling "navigate to content" — diluting
+it across chrome would erase that. Consistency is *within role*, not one color
+for everything.
+
+**CSS recipe** (steel text at rest, copper + underline on hover; relative `ex`
+units scale with font size):
 
 ```css
 a {
-  color: currentColor;                      /* link text = body color (ink) */
-  text-decoration-line: none;               /* no underline at rest */
-  text-decoration-color: var(--bhbta-link-underline);  /* steel-blue (s112) */
+  color: var(--bhbta-link-underline);       /* steel-blue at rest */
+  text-decoration-line: none;               /* underline appears on hover only */
+  text-decoration-color: var(--bhbta-link-underline);
   text-decoration-thickness: 0.3ex;
   text-underline-offset: 0.3ex;
 }
 a:hover {
-  text-decoration-line: underline;          /* underline appears on hover */
+  color: var(--bhbta-link-hover);           /* copper */
+  text-decoration-line: underline;
   text-decoration-color: var(--bhbta-link-hover);
-  color: var(--bhbta-link-hover);
 }
 a:focus-visible { /* visible focus ring, ≥3:1 contrast — see §5 */ }
 ```
 
 Notes:
-- Underline carries the affordance, so link text can share the body color
-  without failing "don't rely on color alone" (WCAG 1.4.1).
-- Link text must meet **4.5:1 vs the cream background** (WCAG 1.4.3).
-- If a future spot ever drops the rest-underline, the bar is **3:1 contrast vs
-  surrounding text** + underline on hover/focus (USWDS + Primer, cross-source).
-- **Never** hover-only-with-no-rest-cue (fails touch + scannability).
+- Steel text carries the at-rest affordance (3:1 vs body) + the hover underline
+  is the non-color cue, so this satisfies "don't rely on color alone" (WCAG 1.4.1
+  / G183).
+- Link text must meet **4.5:1 vs the cream background** (WCAG 1.4.3) — steel
+  `#2C6E8F` is 5.5:1 on cream.
+- **Never** hover-only-with-no-rest-cue (fails touch + scannability) — the s112
+  rule did this for in-prose links; s121 fixed it.
 
 ---
 

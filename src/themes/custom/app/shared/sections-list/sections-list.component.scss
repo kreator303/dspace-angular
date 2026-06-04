@@ -15,13 +15,20 @@
   display: block;
   padding: 0.6rem 0;
   text-decoration: none;
-  color: var(--bhbta-text); // section name = content link text, near-black (s112)
+  color: var(--bhbta-link-underline); // section name = content link → steel at rest (s121)
   transition: color 0.15s;
 }
 
-.bhbta-sections-list__link:hover {
-  color: var(--bhbta-link-hover); // align row-link hover with the rest of the link system (s112)
-  text-decoration: none;
+// Hover consistent with the content-link system (s121): the title coppers +
+// underlines, like every other content link. Scoped to the NAME so the
+// description stays calm (matches a search-result card); the arrow-nudge below
+// is this list's extra flourish.
+.bhbta-sections-list__link:hover .bhbta-sections-list__name {
+  color: var(--bhbta-link-hover);
+  text-decoration-line: underline;
+  text-decoration-color: var(--bhbta-link-hover);
+  text-decoration-thickness: 0.3ex;
+  text-underline-offset: 0.3ex;
 }
 .bhbta-sections-list__link:hover .bhbta-sections-list__arrow {
   transform: translateX(3px);

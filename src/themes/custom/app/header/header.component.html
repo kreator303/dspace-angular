@@ -10,7 +10,7 @@
   <nav class="bhbta-nav" aria-label="Primary">
     <a class="bhbta-nav__item" routerLink="/search/recent" [queryParams]="{'spc.sf': 'dc.date.accessioned', 'spc.sd': 'DESC'}">New</a>
     <a class="bhbta-nav__item" routerLink="/community-list">Browse</a>
-    <a class="bhbta-nav__item" routerLink="/search">Search</a>
+    <bhbta-nav-search></bhbta-nav-search>
   </nav>
 
   <div class="bhbta-account">

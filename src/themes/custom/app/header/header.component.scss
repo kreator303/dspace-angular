@@ -1,7 +1,8 @@
 .bhbta-header {
   background: var(--bhbta-surface);
-  // No bottom border — the 6px maroon strip immediately below is the separator.
-  // A hairline was creating a visible 1px line above the hero (s110).
+  // No bottom border — the maroon breadcrumb ribbon below is the separator
+  // (provides the maroon band + its own margin-bottom spacing). A hairline here
+  // created a visible 1px line above the hero (s110).
   padding: 0.9rem 2rem;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -97,8 +98,7 @@
 }
 .bhbta-account:hover { opacity: 1; }
 
-// (Search is a plain .bhbta-nav__item link to /search since s112; the
-// expand-on-click bhbta-nav-search component is stashed but unused.)
+// (Search is the expand-on-click <bhbta-nav-search> component, restored s121.)
 // The former 6px maroon header strip was dropped (s111): on internal pages the
 // maroon breadcrumb ribbon is the separator; on home the header meets the hero.
 

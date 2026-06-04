@@ -189,24 +189,36 @@ ds-item-search-result-list-element:hover {
 ds-item-search-result-list-element a.lead {
   font-family: var(--bhbta-font-display);
   font-weight: 400; // Marcellus is 400-only; avoids faux-weight
-  color: var(--bhbta-text); // link text (semantic role; resolves to ink)
   font-size: 1.18rem;
   line-height: 1.3;
 }
 
-/* Content-link underline (Andy Bell recipe, ex units) — result titles +
-   in-prose links in descriptions/abstracts. Decided 2026-05-28: underline
-   content links everywhere for consistency. See STYLE-GUIDE.md §4. */
+/* Links — STEEL text at rest, copper on hover (s121). Steel is the at-rest
+   "this is a link" cue: it clears 3:1 vs body text and, with the hover
+   underline as the non-color affordance, satisfies WCAG G183 (1.4.1). The
+   underline stays HOVER-ONLY — which is exactly why ONE style set serves
+   prose + browse + list titles without per-surface scoping. These surfaces
+   all share the .lead class / the content-link role; the reverted 2026-05-28
+   "underline everywhere" trial reached for the same unification but did it as
+   noisy at-rest underlines on the dense 100+-link browse index. Steel-at-rest
+   gives the cue without the noise. See STYLE-GUIDE.md §4. */
+ds-comcol-page-content a,
 ds-item-search-result-list-element a.lead,
-ds-comcol-page-content a {
-  text-decoration-line: none; // underline appears on hover only (s112)
+ds-browse-entry-list-element a.lead,
+ds-collection-list-element a.lead,
+ds-community-list-element a.lead {
+  color: var(--bhbta-link-underline); // steel-blue at rest
+  text-decoration-line: none;         // underline appears on hover only
   text-decoration-color: var(--bhbta-link-underline);
   text-decoration-thickness: 0.3ex;
   text-underline-offset: 0.3ex;
 }
+ds-comcol-page-content a:hover,
 ds-item-search-result-list-element a.lead:hover,
-ds-comcol-page-content a:hover {
-  color: var(--bhbta-link-hover);
+ds-browse-entry-list-element a.lead:hover,
+ds-collection-list-element a.lead:hover,
+ds-community-list-element a.lead:hover {
+  color: var(--bhbta-link-hover);     // copper
   text-decoration-line: underline;
   text-decoration-color: var(--bhbta-link-hover);
 }
@@ -216,5 +228,18 @@ ds-comcol-page-content a:hover {
 .badge.bg-info {
   background-color: var(--bhbta-accent-soft) !important;
   color: var(--bhbta-brand) !important;
+}
+
+/* Item-count badge on collection/community rows (s121) — populated by the native
+   archivedItemsCount field (webui.strengths.show enabled backend-side). Drop the
+   stock grey pill for the maroon stat treatment used on the home SECTIONS panel. */
+.archived-items-lead {
+  background: transparent !important;
+  color: var(--bhbta-stat) !important;        // maroon numeric accent
+  font-family: var(--bhbta-font-body);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0 !important;
 }
 

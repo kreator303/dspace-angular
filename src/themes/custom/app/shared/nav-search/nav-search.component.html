@@ -1,8 +1,8 @@
 <button type="button"
         class="bhbta-nav-search__trigger"
         [class.is-expanded]="expanded()"
-        (click)="open(); $event.stopPropagation()"
-        aria-label="Open search">
+        (click)="toggle(); $event.stopPropagation()"
+        [attr.aria-expanded]="expanded()">
   Search
 </button>
 
@@ -14,7 +14,6 @@
            [(ngModel)]="query"
            (keydown.enter)="submit()"
            (keydown.escape)="close()"
-           placeholder="Search the archive…"
            aria-label="Search the archive">
     <button type="button"
             class="bhbta-nav-search__submit"
