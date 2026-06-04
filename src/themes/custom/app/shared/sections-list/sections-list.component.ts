@@ -8,14 +8,14 @@ import {
 import { RouterLink } from '@angular/router';
 
 import { APP_CONFIG, AppConfig } from '../../../../../config/app-config.interface';
-import { cleanSectionName, compareSections } from '../section-order';
+import { cleanSectionName, compareSections, itemCount } from '../section-order';
 
 interface Section {
   uuid: string;
   handle: string;
   name: string;
   description: string;
-  count: number;
+  count: number | null;
 }
 
 @Component({
@@ -55,7 +55,7 @@ export class BhbtaSectionsListComponent implements OnInit {
         handle: c.handle,
         name: cleanSectionName(c.name),
         description: c.metadata?.['dc.description.abstract']?.[0]?.value ?? '',
-        count: c.archivedItemsCount ?? 0,
+        count: itemCount(c),
       }));
       this.sections.set(withCounts);
     } catch (e) {

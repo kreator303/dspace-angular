@@ -3,7 +3,7 @@ import { Component, Inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { APP_CONFIG, AppConfig } from '../../../../../config/app-config.interface';
-import { cleanSectionName, compareSections } from '../../shared/section-order';
+import { cleanSectionName, compareSections, itemCount } from '../../shared/section-order';
 
 interface BrowseCollection { uuid: string; name: string; }
 interface BrowseSubsection { uuid: string; name: string; collections: BrowseCollection[]; }
@@ -40,7 +40,7 @@ interface BrowseSection { uuid: string; name: string; anchor: string; subsection
 export class BhbtaBrowseSectionsComponent implements OnInit {
 
   sections = signal<BrowseSection[]>([]);
-  counts = signal<Record<string, number>>({});
+  counts = signal<Record<string, number | null>>({});
   loading = signal(true);
 
   private restBase: string;
@@ -59,13 +59,14 @@ export class BhbtaBrowseSectionsComponent implements OnInit {
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
 
-  private async buildTree(): Promise<{ sections: BrowseSection[]; counts: Record<string, number> }> {
+  private async buildTree(): Promise<{ sections: BrowseSection[]; counts: Record<string, number | null> }> {
     // Count comes from the native archivedItemsCount on each fetched object
     // (webui.strengths.show enabled backend-side, s121) — recorded as the tree is
-    // walked, so there is no separate count fetch.
-    const counts: Record<string, number> = {};
+    // walked, so there is no separate count fetch. itemCount() maps DSpace's -1
+    // "unavailable" sentinel to null so the template hides it (not "-1").
+    const counts: Record<string, number | null> = {};
     const rec = (o: { uuid: string; archivedItemsCount?: number }) => {
-      counts[o.uuid] = o.archivedItemsCount ?? 0;
+      counts[o.uuid] = itemCount(o);
     };
 
     const top = await this.json(`${this.restBase}/core/communities/search/top?size=50`);
