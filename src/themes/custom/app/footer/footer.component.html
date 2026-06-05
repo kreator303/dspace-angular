@@ -1,7 +1,7 @@
 <footer class="bhbta-footer">
   <span class="bhbta-footer__row">
     <span class="bhbta-footer__label">AI:</span>
-    <span class="bhbta-footer__url">mcp.babaharidassteachingsarchive.org</span>
+    <span class="bhbta-footer__url">{{ mcpDisplay }}</span>
     <button class="bhbta-footer__copy" type="button" (click)="copyMcpUrl()"
             [attr.aria-label]="copied() ? 'Copied' : 'Copy MCP URL'">
       @if (copied()) {
