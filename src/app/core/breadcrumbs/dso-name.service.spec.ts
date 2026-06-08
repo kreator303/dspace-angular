@@ -1,8 +1,8 @@
-import { ListableObject } from '../../shared/object-collection/shared/listable-object.model';
 import { DSpaceObject } from '../shared/dspace-object.model';
 import { GenericConstructor } from '../shared/generic-constructor';
 import { Item } from '../shared/item.model';
 import { MetadataValueFilter } from '../shared/metadata.models';
+import { ListableObject } from '../shared/object-collection/listable-object.model';
 import { DSONameService } from './dso-name.service';
 
 describe(`DSONameService`, () => {
@@ -107,6 +107,38 @@ describe(`DSONameService`, () => {
 
       expect((service as any).factories.Default).toHaveBeenCalledWith(mockDSO, undefined);
       expect(result).toBe('Bingo!');
+    });
+  });
+
+  describe(`getNameLanguage`, () => {
+    it(`should use the OrgUnit language factory for OrgUnit entities`, () => {
+      const orgUnit = Object.assign(new DSpaceObject(), {
+        firstMetadata(keyOrKeys: string | string[]): { language: string } {
+          return { language: 'it' };
+        },
+        getRenderTypes(): (string | GenericConstructor<ListableObject>)[] {
+          return ['OrgUnit', Item, DSpaceObject];
+        },
+      });
+
+      const result = service.getNameLanguage(orgUnit);
+
+      expect(result).toBe('it');
+    });
+
+    it(`should use the Default language factory for regular DSpaceObjects`, () => {
+      const dso = Object.assign(new DSpaceObject(), {
+        firstMetadata(keyOrKeys: string | string[]): { language: string } {
+          return { language: 'en' };
+        },
+        getRenderTypes(): (string | GenericConstructor<ListableObject>)[] {
+          return [DSpaceObject];
+        },
+      });
+
+      const result = service.getNameLanguage(dso);
+
+      expect(result).toBe('en');
     });
   });
 

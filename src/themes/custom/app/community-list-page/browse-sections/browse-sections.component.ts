@@ -3,7 +3,7 @@ import { Component, Inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { APP_CONFIG, AppConfig } from '../../../../../config/app-config.interface';
-import { cleanSectionName, compareSections } from '../../shared/section-order';
+import { cleanSectionName, compareSections, itemCount } from '../../shared/section-order';
 
 interface BrowseCollection { uuid: string; name: string; }
 interface BrowseSubsection { uuid: string; name: string; collections: BrowseCollection[]; }
@@ -15,14 +15,13 @@ interface BrowseSection { uuid: string; name: string; anchor: string; subsection
  * section-order module (single source, same as the home list); within sections
  * we preserve DSpace's default (name) order. All levels show cleaned names.
  *
- * Item counts (s112): the TREE renders first (≈4s), then counts populate into a
- * separate reactive `counts` signal so the page is never blocked on them. Each
- * node's count is its own Discover scope count (`size=0` → totalElements) —
- * authoritative (matches what DSpace shows on that community/collection page) and
- * cheap: ~156 tiny parallel calls finish in ~4-5s. (Rejected `embed=owningCollection`
- * tally: only ~5 calls but each page embeds 100 full collection objects → ~46s,
- * which blocked the whole page. DSpace exposes no location facet for a 1-call path.)
- * If browse traffic grows, a cached backend counts endpoint is the optimization.
+ * Item counts (s121): read from the native archivedItemsCount field carried on
+ * each community/collection object the tree already fetches — recorded as the
+ * tree is walked, into the `counts` signal. No separate count fetch. Requires
+ * webui.strengths.show=true on the backend (set via the .dspace-env config-as-code
+ * override in load-secrets.sh); Solr-backed + cached on first load. Replaced the
+ * old ~156-parallel-call Discover scope-count loop (the same native field also
+ * drives the stock collection/community list-element count badges).
  *
  * Tier 2: a new theme-local component, hosted on the /community-list route by a
  * template-only override of the community-list-page. No stock TS logic touched.
@@ -41,7 +40,7 @@ interface BrowseSection { uuid: string; name: string; anchor: string; subsection
 export class BhbtaBrowseSectionsComponent implements OnInit {
 
   sections = signal<BrowseSection[]>([]);
-  counts = signal<Record<string, number>>({});
+  counts = signal<Record<string, number | null>>({});
   loading = signal(true);
 
   private restBase: string;
@@ -60,25 +59,36 @@ export class BhbtaBrowseSectionsComponent implements OnInit {
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
 
-  private async buildTree(): Promise<BrowseSection[]> {
+  private async buildTree(): Promise<{ sections: BrowseSection[]; counts: Record<string, number | null> }> {
+    // Count comes from the native archivedItemsCount on each fetched object
+    // (webui.strengths.show enabled backend-side, s121) — recorded as the tree is
+    // walked, so there is no separate count fetch. itemCount() maps DSpace's -1
+    // "unavailable" sentinel to null so the template hides it (not "-1").
+    const counts: Record<string, number | null> = {};
+    const rec = (o: { uuid: string; archivedItemsCount?: number }) => {
+      counts[o.uuid] = itemCount(o);
+    };
+
     const top = await this.json(`${this.restBase}/core/communities/search/top?size=50`);
     const comms = (top._embedded?.communities ?? []).sort(compareSections);
 
-    return Promise.all(
-      comms.map(async (c: { uuid: string; name: string }) => {
+    const sections = await Promise.all(
+      comms.map(async (c: { uuid: string; name: string; archivedItemsCount?: number }) => {
+        rec(c);
         const subResp = await this.json(`${this.restBase}/core/communities/${c.uuid}/subcommunities?size=100`);
         const subs = subResp._embedded?.subcommunities ?? [];
         const subsections: BrowseSubsection[] = await Promise.all(
-          subs.map(async (s: { uuid: string; name: string }) => {
+          subs.map(async (s: { uuid: string; name: string; archivedItemsCount?: number }) => {
+            rec(s);
             const colResp = await this.json(`${this.restBase}/core/communities/${s.uuid}/collections?size=100`);
             const cols = colResp._embedded?.collections ?? [];
             return {
               uuid: s.uuid,
               name: cleanSectionName(s.name),
-              collections: cols.map((col: { uuid: string; name: string }) => ({
-                uuid: col.uuid,
-                name: cleanSectionName(col.name),
-              })),
+              collections: cols.map((col: { uuid: string; name: string; archivedItemsCount?: number }) => {
+                rec(col);
+                return { uuid: col.uuid, name: cleanSectionName(col.name) };
+              }),
             };
           }),
         );
@@ -86,43 +96,15 @@ export class BhbtaBrowseSectionsComponent implements OnInit {
         return { uuid: c.uuid, name, anchor: this.anchorFor(name), subsections };
       }),
     );
-  }
-
-  /** One Discover scope count (size=0 → totalElements) per node, in parallel. */
-  private async fetchScopeCounts(sections: BrowseSection[]): Promise<void> {
-    const uuids: string[] = [];
-    for (const s of sections) {
-      uuids.push(s.uuid);
-      for (const sub of s.subsections) {
-        uuids.push(sub.uuid);
-        for (const col of sub.collections) {
-          uuids.push(col.uuid);
-        }
-      }
-    }
-    const entries = await Promise.all(
-      uuids.map(async (u): Promise<[string, number]> => {
-        try {
-          const d = await this.json(`${this.restBase}/discover/search/objects?dsoType=item&size=0&scope=${u}`);
-          return [u, d._embedded?.searchResult?.page?.totalElements ?? 0];
-        } catch {
-          return [u, 0];
-        }
-      }),
-    );
-    const map: Record<string, number> = {};
-    for (const [u, n] of entries) {
-      map[u] = n;
-    }
-    this.counts.set(map);
+    return { sections, counts };
   }
 
   async ngOnInit() {
     try {
-      const sections = await this.buildTree();
+      const { sections, counts } = await this.buildTree();
       this.sections.set(sections);
-      this.loading.set(false);          // render the tree immediately — never block on counts
-      void this.fetchScopeCounts(sections); // fill counts asynchronously into the signal
+      this.counts.set(counts);   // counts arrive WITH the tree (native field) — no pop-in
+      this.loading.set(false);
     } catch (e) {
       console.error('[bhbta-browse-sections] fetch failed', e);
       this.loading.set(false);

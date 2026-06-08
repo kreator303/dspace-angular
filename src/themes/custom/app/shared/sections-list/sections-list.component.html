@@ -8,7 +8,9 @@
         <a class="bhbta-sections-list__link" [routerLink]="['/communities', s.uuid]">
           <span class="bhbta-sections-list__row">
             <span class="bhbta-sections-list__name">{{ s.name }}</span>
-            <span class="bhbta-sections-list__count" [class.is-zero]="s.count === 0">{{ s.count }}</span>
+            @if (s.count != null) {
+              <span class="bhbta-sections-list__count" [class.is-zero]="s.count === 0">{{ s.count }}</span>
+            }
             <span class="bhbta-sections-list__arrow">→</span>
           </span>
           @if (s.description) {

@@ -2,12 +2,17 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { DSpaceObject } from '@dspace/core/shared/dspace-object.model';
+import { Metadata } from '@dspace/core/shared/metadata.utils';
+import { SearchResult } from '@dspace/core/shared/search/models/search-result.model';
+import { hasValue } from '@dspace/shared/utils/empty.util';
 
-import { DSpaceObject } from '../../../core/shared/dspace-object.model';
-import { Metadata } from '../../../core/shared/metadata.utils';
-import { hasValue } from '../../empty.util';
+import { MetadataValue } from '../../../core/shared/metadata.models';
 import { AbstractListableElementComponent } from '../../object-collection/shared/object-collection-element/abstract-listable-element.component';
-import { SearchResult } from '../../search/models/search-result.model';
+import {
+  allMetadataWithHitHighlights,
+  firstMetadataWithHitHighlights,
+} from '../../utils/highlighted-metadata.util';
 
 /**
  * Component representing Search Results with ViewMode.DetailedElement
@@ -33,6 +38,16 @@ export class SearchResultDetailElementComponent<T extends SearchResult<K>, K ext
   }
 
   /**
+   * Gets all matching metadata values from hitHighlights or dso metadata.
+   *
+   * @param {string|string[]} keyOrKeys The metadata key(s) in scope. Wildcards are supported; see [[Metadata]].
+   * @returns {MetadataValue[]} the matching values or an empty array.
+   */
+  allMetadata(keyOrKeys: string | string[]): MetadataValue[] {
+    return allMetadataWithHitHighlights(this.dso.metadata, this.object.hitHighlights, keyOrKeys);
+  }
+
+  /**
    * Gets all matching metadata string values from hitHighlights or dso metadata, preferring hitHighlights.
    *
    * @param {string|string[]} keyOrKeys The metadata key(s) in scope. Wildcards are supported; see [[Metadata]].
@@ -41,6 +56,16 @@ export class SearchResultDetailElementComponent<T extends SearchResult<K>, K ext
    */
   allMetadataValues(keyOrKeys: string | string[], escapeHTML = true): string[] {
     return Metadata.allValues(this.dso.metadata, keyOrKeys, this.object.hitHighlights, undefined, escapeHTML);
+  }
+
+  /**
+   * Gets the first matching metadata value from hitHighlights or dso metadata, preferring hitHighlights.
+   *
+   * @param {string|string[]} keyOrKeys The metadata key(s) in scope. Wildcards are supported; see [[Metadata]].
+   * @returns {MetadataValue} the first matching value, or `undefined`.
+   */
+  firstMetadata(keyOrKeys: string | string[]): MetadataValue {
+    return firstMetadataWithHitHighlights(this.dso.metadata, this.object.hitHighlights, keyOrKeys);
   }
 
   /**

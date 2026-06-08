@@ -8,14 +8,14 @@ import {
 import { RouterLink } from '@angular/router';
 
 import { APP_CONFIG, AppConfig } from '../../../../../config/app-config.interface';
-import { cleanSectionName, compareSections } from '../section-order';
+import { cleanSectionName, compareSections, itemCount } from '../section-order';
 
 interface Section {
   uuid: string;
   handle: string;
   name: string;
   description: string;
-  count: number;
+  count: number | null;
 }
 
 @Component({
@@ -47,22 +47,15 @@ export class BhbtaSectionsListComponent implements OnInit {
       // (single source of truth, also used by the browse-page override).
       comms.sort(compareSections);
 
-      const withCounts: Section[] = await Promise.all(comms.map(async (c: { uuid: string; handle: string; name: string; metadata?: Record<string, Array<{value: string}>> }) => {
-        const displayName = cleanSectionName(c.name);
-        const description = c.metadata?.['dc.description.abstract']?.[0]?.value ?? '';
-        try {
-          const r = await fetch(`${this.restBase}/discover/search/objects?dsoType=item&scope=${c.uuid}&size=1`);
-          const j = await r.json();
-          return {
-            uuid: c.uuid,
-            handle: c.handle,
-            name: displayName,
-            description,
-            count: j._embedded?.searchResult?.page?.totalElements ?? 0,
-          };
-        } catch {
-          return { uuid: c.uuid, handle: c.handle, name: displayName, description, count: 0 };
-        }
+      // Count comes from the native archivedItemsCount on each community object
+      // (webui.strengths.show enabled backend-side, s121) — same value the DSpace
+      // REST/UI uses. Replaced the old per-section Discover scope-count fetch.
+      const withCounts: Section[] = comms.map((c: { uuid: string; handle: string; name: string; archivedItemsCount?: number; metadata?: Record<string, Array<{value: string}>> }) => ({
+        uuid: c.uuid,
+        handle: c.handle,
+        name: cleanSectionName(c.name),
+        description: c.metadata?.['dc.description.abstract']?.[0]?.value ?? '',
+        count: itemCount(c),
       }));
       this.sections.set(withCounts);
     } catch (e) {

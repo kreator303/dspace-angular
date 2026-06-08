@@ -86,4 +86,10 @@
   "subscriptions.community": "Subscriptions for sections",
   "subscriptions.table.empty.message": "You do not have any subscriptions at this time. To subscribe to email updates for a section or collection, use the subscription button on the object's page.",
   "community-access-control-title": "This form allows you to perform changes to the access conditions of all the items owned by any collection under this section. Changes may be performed to either all Item metadata or all content (bitstreams).",
+
+  // === 'New' entry-gate page (#192): the 'recent' discovery configuration ===
+  // DSpace derives these keys from the configuration name ({configuration}.search.*).
+  // PLACEHOLDER copy — refine alongside the context paragraph.
+  "recent.search.title": "New Items",
+  "recent.search.results.head": "New Items",
 }

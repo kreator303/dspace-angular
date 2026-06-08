@@ -10,7 +10,7 @@ Overview
 
 DSpace open source software is a turnkey repository application used by more than
 2,000 organizations and institutions worldwide to provide durable access to digital resources.
-For more information, visit http://www.dspace.org/
+For more information, visit https://www.dspace.org/
 
 DSpace consists of both a Java-based backend and an Angular-based frontend.
 
@@ -285,7 +285,7 @@ If you run into odd test errors, see the Angular guide to debugging tests: https
 
 E2E tests (aka integration tests) use [Cypress.io](https://www.cypress.io/). Configuration for cypress can be found in the `cypress.json` file in the root directory.
 
-The test files can be found in the `./cypress/integration/` folder.
+The test files can be found in the `./cypress/e2e/` folder.
 
 Before you can run e2e tests, two things are REQUIRED:
 1. You MUST be running the DSpace backend (i.e. REST API) locally. The e2e tests will *NOT* succeed if run against our demo/sandbox REST API (https://demo.dspace.org/server/ or https://sandbox.dspace.org/server/), as those sites may have content added/removed at any time.
@@ -313,7 +313,7 @@ The `ng e2e` command will start Cypress and allow you to select the browser you 
 
 #### Writing E2E Tests
 
-All E2E tests must be created under the `./cypress/integration/` folder, and must end in `.spec.ts`. Subfolders are allowed.
+All E2E tests must be created under the `./cypress/e2e/` folder, and must end in `.spec.ts`. Subfolders are allowed.
 
 * The easiest way to start creating new tests is by running `ng e2e`. This builds the app and brings up Cypress.
 * From here, if you are editing an existing test file, you can either open it in your IDE or run it first to see what it already does.
@@ -392,9 +392,9 @@ dspace-angular
 ├── config                                              *
 │   └── config.yml                                      * Default app config
 ├── cypress                                             * Folder for Cypress (https://cypress.io/) / e2e tests
-│   ├── downloads                                       *
-│   ├── fixtures                                        * Folder for e2e/integration test files
-│   ├── integration                                     * Folder for any fixtures needed by e2e tests
+│   ├── downloads                                       * (Optional) Folder for files downloaded during e2e tests
+│   ├── e2e                                             * Folder for e2e/integration test files
+│   ├── fixtures                                        * Folder for reusable static test data (JSON, images, etc.)
 │   ├── plugins                                         * Folder for Cypress plugins (if any)
 │   ├── support                                         * Folder for global e2e test actions/commands (run for all tests)
 │   └── tsconfig.json                                   * TypeScript configuration file for e2e tests
@@ -551,7 +551,7 @@ Additional support options are at https://wiki.lyrasis.org/display/DSPACE/Suppor
 
 DSpace also has an active service provider network. If you'd rather hire a service provider to
 install, upgrade, customize or host DSpace, then we recommend getting in touch with one of our
-[Registered Service Providers](http://www.dspace.org/service-providers).
+[Registered Service Providers](https://dspace.org/registered-service-providers/).
 
 
 Issue Tracker
@@ -564,7 +564,7 @@ DSpace uses GitHub to track issues:
 License
 -------
 DSpace source code is freely available under a standard [BSD 3-Clause license](https://opensource.org/licenses/BSD-3-Clause).
-The full license is available in the [LICENSE](LICENSE) file or online at http://www.dspace.org/license/
+The full license is available in the [LICENSE](LICENSE) file or online at https://www.dspace.org/license/
 
 DSpace uses third-party libraries which may be distributed under different licenses. Those licenses are listed
 in the [LICENSES_THIRD_PARTY](LICENSES_THIRD_PARTY) file.

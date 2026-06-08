@@ -13,36 +13,45 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { LinkService } from '@dspace/core/cache/builders/link.service';
+import { AuthorizationDataService } from '@dspace/core/data/feature-authorization/authorization-data.service';
+import { ItemDataService } from '@dspace/core/data/item-data.service';
+import { JsonPatchOperationPathCombiner } from '@dspace/core/json-patch/builder/json-patch-operation-path-combiner';
+import { JsonPatchOperationsBuilder } from '@dspace/core/json-patch/builder/json-patch-operations-builder';
+import { HardRedirectService } from '@dspace/core/services/hard-redirect.service';
+import { FileService } from '@dspace/core/shared/file.service';
+import { HALEndpointService } from '@dspace/core/shared/hal-endpoint.service';
+import { SubmissionJsonPatchOperationsService } from '@dspace/core/submission/submission-json-patch-operations.service';
+import { AuthorizationDataServiceStub } from '@dspace/core/testing/authorization-service.stub';
+import { HALEndpointServiceStub } from '@dspace/core/testing/hal-endpoint-service.stub';
+import { getMockLinkService } from '@dspace/core/testing/link-service.mock';
+import { getMockSectionUploadService } from '@dspace/core/testing/section-upload.service.mock';
+import { SubmissionJsonPatchOperationsServiceStub } from '@dspace/core/testing/submission-json-patch-operations-service.stub';
+import { SubmissionServiceStub } from '@dspace/core/testing/submission-service.stub';
+import { createTestComponent } from '@dspace/core/testing/utils.test';
+import { createFailedRemoteDataObject$ } from '@dspace/core/utilities/remote-data.utils';
 import {
   NgbModal,
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { JsonPatchOperationPathCombiner } from '../../../../core/json-patch/builder/json-patch-operation-path-combiner';
-import { JsonPatchOperationsBuilder } from '../../../../core/json-patch/builder/json-patch-operations-builder';
-import { HALEndpointService } from '../../../../core/shared/hal-endpoint.service';
-import { SubmissionJsonPatchOperationsService } from '../../../../core/submission/submission-json-patch-operations.service';
-import { ThemedFileDownloadLinkComponent } from '../../../../shared/file-download-link/themed-file-download-link.component';
 import { FormBuilderService } from '../../../../shared/form/builder/form-builder.service';
 import { FormService } from '../../../../shared/form/form.service';
-import { getMockFormService } from '../../../../shared/mocks/form-service.mock';
-import { getMockSectionUploadService } from '../../../../shared/mocks/section-upload.service.mock';
+import { getMockFormService } from '../../../../shared/form/testing/form-service.mock';
+import { getMockThemeService } from '../../../../shared/theme-support/test/theme-service.mock';
+import { ThemeService } from '../../../../shared/theme-support/theme.service';
+import { FileSizePipe } from '../../../../shared/utils/file-size-pipe';
+import { SubmissionService } from '../../../submission.service';
 import {
   mockSubmissionCollectionId,
   mockSubmissionId,
   mockUploadConfigResponse,
   mockUploadFiles,
-} from '../../../../shared/mocks/submission.mock';
-import { getMockThemeService } from '../../../../shared/mocks/theme-service.mock';
-import { HALEndpointServiceStub } from '../../../../shared/testing/hal-endpoint-service.stub';
-import { SubmissionJsonPatchOperationsServiceStub } from '../../../../shared/testing/submission-json-patch-operations-service.stub';
-import { SubmissionServiceStub } from '../../../../shared/testing/submission-service.stub';
-import { createTestComponent } from '../../../../shared/testing/utils.test';
-import { ThemeService } from '../../../../shared/theme-support/theme.service';
-import { FileSizePipe } from '../../../../shared/utils/file-size-pipe';
-import { SubmissionService } from '../../../submission.service';
+} from '../../../utils/submission.mock';
 import { SectionUploadService } from '../section-upload.service';
 import { POLICY_DEFAULT_WITH_LIST } from '../section-upload-constants';
 import { SubmissionSectionUploadFileEditComponent } from './edit/section-upload-file-edit.component';
@@ -65,7 +74,8 @@ describe('SubmissionSectionUploadFileComponent', () => {
   let comp: SubmissionSectionUploadFileComponent;
   let compAsAny: any;
   let fixture: ComponentFixture<SubmissionSectionUploadFileComponent>;
-  let submissionServiceStub: SubmissionServiceStub;
+  let submissionServiceStub = new SubmissionServiceStub();
+  submissionServiceStub.retrieveSubmission.and.returnValue(createFailedRemoteDataObject$());
   let uploadService: any;
   let formService: any;
   let halService: any;
@@ -105,14 +115,20 @@ describe('SubmissionSectionUploadFileComponent', () => {
         { provide: HALEndpointService, useValue: new HALEndpointServiceStub('workspaceitems') },
         { provide: JsonPatchOperationsBuilder, useValue: jsonPatchOpBuilder },
         { provide: SubmissionJsonPatchOperationsService, useValue: submissionJsonPatchOperationsServiceStub },
-        { provide: SubmissionService, useClass: SubmissionServiceStub },
+        { provide: SubmissionService, useValue: submissionServiceStub },
         { provide: SectionUploadService, useValue: getMockSectionUploadService() },
         { provide: ThemeService, useValue: getMockThemeService() },
+        { provide: FileService, useValue: { retrieveFileDownloadLink: jasmine.createSpy('retrieveFileDownloadLink').and.returnValue(of('https://test-url.com/file')) } },
+        { provide: HardRedirectService, useValue: { redirect: jasmine.createSpy('redirect') } },
+        { provide: Store, useValue: provideMockStore() },
+        { provide: ItemDataService, useValue: {} },
         ChangeDetectorRef,
         NgbModal,
         SubmissionSectionUploadFileComponent,
         SubmissionSectionUploadFileEditComponent,
         FormBuilderService,
+        { provide: AuthorizationDataService, useValue: new AuthorizationDataServiceStub() },
+        { provide: LinkService, useValue: getMockLinkService() },
       ],
     })
       .overrideComponent(SubmissionSectionUploadFileComponent, {
@@ -121,7 +137,6 @@ describe('SubmissionSectionUploadFileComponent', () => {
         },
         remove: { imports: [
           SubmissionSectionUploadFileViewComponent,
-          ThemedFileDownloadLinkComponent,
         ] },
       })
       .compileComponents();
@@ -181,6 +196,7 @@ describe('SubmissionSectionUploadFileComponent', () => {
       comp.fileIndex = fileIndex;
       comp.fileId = fileId;
       comp.fileName = fileName;
+      (uploadService.getFileData as jasmine.Spy).and.returnValue(of(undefined));
     });
 
     afterEach(() => {
@@ -270,6 +286,15 @@ describe('SubmissionSectionUploadFileComponent', () => {
       fixture.detectChanges();
 
       expect(compAsAny.editBitstreamData).toHaveBeenCalled();
+    });
+
+    it('should call downloadFile and open link in new tab', () => {
+      spyOn(window, 'open');
+      comp.fileData = fileData;
+
+      comp.downloadFile();
+
+      expect(window.open).toHaveBeenCalledWith('https://test-url.com/file', '_blank');
     });
 
   });

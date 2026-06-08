@@ -39,39 +39,43 @@ $bhbta-maroon-hover: #944444;   // lighter tint for link/icon hover
 $bhbta-cream:        #FFFDF4;   // page background (matches parent)
 $bhbta-cream-warm:   #E3D2C8;   // "sand" accent (parent h2 color)
 $bhbta-copper:       #B1713C;   // copper accent (parent h3 / kicker labels)
-$bhbta-ink:          #1A1A1A;   // near-black running/body text (s112 — maroon body text reverted; maroon reserved for links + display headings)
-$bhbta-ink-muted:    #484848;   // (legacy neutral; superseded by warm-neutral ramp below)
-$bhbta-ink-faint:    #6E6E6E;   // (legacy neutral; superseded by warm-neutral ramp below)
+$bhbta-ink:          #1A1A1A;   // near-black running/body text (maroon reserved for display headings; content links are steel)
+// (s121: removed $bhbta-ink-muted / $bhbta-ink-faint — superseded by the warm-
+// neutral ramp below; the muted/faint ROLES now resolve to n500 / n400.)
 
-// Cool accent / link underline (s112) — tuned steel-blue. Relieves the
-// analogous-warm monotone (maroon/copper/sand are all red→orange); WCAG-AA on
-// cream (5.5:1) AND clears 3:1 vs near-black body text, so links survive even
-// without an underline. Validated against real institutional link blues
-// (TNA #005FA3, GOV.UK #1D70B8, NYPL #0069BF, parent #006AA4).
+// Cool accent / link color (s112 underline → content-link text+underline s121) —
+// tuned steel-blue. Relieves the analogous-warm monotone (maroon/copper/sand are
+// all red→orange); WCAG-AA on cream (5.5:1) AND clears 3:1 vs near-black body
+// text. Validated against real institutional link blues (TNA #005FA3,
+// GOV.UK #1D70B8, NYPL #0069BF, parent #006AA4).
 $bhbta-cool:         #2C6E8F;
-$bhbta-cool-dark:    #1F5266;   // darker steel for cool-accent hover/pressed
+$bhbta-cool-dark:    #1F5266;   // PALETTE SCAFFOLD (unused today) — darker steel for a future cool pressed/hover. Reach for this before adding a new blue.
 
 // Warm-neutral ramp (cream → ink), tinted toward the palette so dividers,
 // borders, and muted text read warm rather than cold grey. This is the piece
 // that lets surfaces/borders/secondary-text come OFF maroon-tints (the research
 // finding: maroon was doing surface/border/secondary-text jobs it shouldn't).
+// COMPLETE ramp kept on purpose (Gerry s121): n100/n600/n700 aren't wired into a
+// role yet — they're deliberate PALETTE SCAFFOLD. When a component needs a new
+// neutral, reach for a ramp step HERE FIRST rather than inventing a hex — that's
+// what prevents the drift this single-source palette exists to avoid.
 $bhbta-n50:          #FFFDF4;   // = surface/cream
-$bhbta-n100:         #F2ECE2;   // raised surface
+$bhbta-n100:         #F2ECE2;   // raised surface (scaffold — unused today)
 $bhbta-n200:         #E3D8C9;   // subtle divider / sand
 $bhbta-n300:         #C9BBAA;   // standard hairline border
 $bhbta-n400:         #9E9183;   // strong border / faint text
 $bhbta-n500:         #6E635A;   // muted text (AA on cream)
-$bhbta-n600:         #4A423C;   // secondary text
-$bhbta-n700:         #2B2622;   // near-ink
+$bhbta-n600:         #4A423C;   // secondary text (scaffold — unused today)
+$bhbta-n700:         #2B2622;   // near-ink (scaffold — unused today)
 
 // Display serif + body sans, matching the parent org site.
 $bhbta-font-display: "Marcellus", Georgia, "Times New Roman", serif;
 $bhbta-font-body:    "Montserrat", -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
 $primary:    $bhbta-maroon;
-$link-color: $bhbta-ink;      // link TEXT near-black; the maroon is the underline only (Gerry s112)
+$link-color: $bhbta-ink;      // DEFAULT link (chrome/facet) stays neutral ink; content links are steel via scoped rules (s121)
 $body-bg:    $bhbta-cream;
-$body-color: $bhbta-ink;      // running/body text near-black, not maroon (Gerry s112)
+$body-color: $bhbta-ink;      // running/body text near-black, not maroon
 
 // Add new semantic colors here (you don't need to add existing semantic colors)
 @import '../../../styles/_variables.scss';

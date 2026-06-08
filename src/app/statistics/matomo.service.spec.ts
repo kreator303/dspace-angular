@@ -4,6 +4,22 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
+import { OrejimeService } from '@dspace/core/cookies/orejime.service';
+import { ConfigurationDataService } from '@dspace/core/data/configuration-data.service';
+import {
+  NativeWindowRef,
+  NativeWindowService,
+} from '@dspace/core/services/window.service';
+import { ConfigurationProperty } from '@dspace/core/shared/configuration-property.model';
+import {
+  MATOMO_ENABLED,
+  MATOMO_SITE_ID,
+  MATOMO_TRACKER_URL,
+} from '@dspace/core/statistics/models/matomo-type';
+import {
+  createFailedRemoteDataObject$,
+  createSuccessfulRemoteDataObject$,
+} from '@dspace/core/utilities/remote-data.utils';
 import {
   MatomoInitializerService,
   MatomoTracker,
@@ -12,23 +28,7 @@ import { MatomoTestingModule } from 'ngx-matomo-client/testing';
 import { of } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { ConfigurationDataService } from '../core/data/configuration-data.service';
-import {
-  NativeWindowRef,
-  NativeWindowService,
-} from '../core/services/window.service';
-import { ConfigurationProperty } from '../core/shared/configuration-property.model';
-import { OrejimeService } from '../shared/cookies/orejime.service';
-import {
-  createFailedRemoteDataObject$,
-  createSuccessfulRemoteDataObject$,
-} from '../shared/remote-data.utils';
-import {
-  MATOMO_ENABLED,
-  MATOMO_SITE_ID,
-  MATOMO_TRACKER_URL,
-  MatomoService,
-} from './matomo.service';
+import { MatomoService } from './matomo.service';
 
 describe('MatomoService', () => {
   let service: MatomoService;
